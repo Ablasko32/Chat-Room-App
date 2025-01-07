@@ -1,11 +1,36 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import { useState } from "react";
+import { Container } from "../features/ui/Container";
+import { NotificationBox } from "../features/messages/Notifications";
+import { MessageBox } from "../features/messages/MessageBox";
+import Message from "../features/messages/Message";
+import styled from "styled-components";
+import TextField, {
+  MessageForm,
+  SendMessageButton,
+} from "../features/ui/TextField";
+import { LiaTelegram } from "react-icons/lia";
+
+const BackButton = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+`;
 
 function Room() {
   const location = useLocation();
-  console.log(location);
+  const messageScrollRef = useRef();
+  const notificationScrollRef = useRef();
+  const sendRef = useRef();
+
+  // console.log(location);
   const [userMessages, setUserMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [inbox, setInbox] = useState([]);
@@ -15,7 +40,7 @@ function Room() {
   const { room, name } = location.state;
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:3000");
+    socketRef.current = io("http://192.168.0.17:3000");
     socketRef.current.on("connect", () => {
       console.log("Connected to the server. Socket ID:", socketRef.current.id);
     });
@@ -36,7 +61,7 @@ function Room() {
     });
 
     socketRef.current.on("getNewMessage", (msg) => {
-      console.log(msg);
+      // console.log(msg);
       setInbox((prev) => {
         return [...prev, msg];
       });
@@ -48,8 +73,40 @@ function Room() {
     };
   }, [name, room]);
 
+  useEffect(() => {
+    // SCROLL EFFECT FOR MESSAGES
+    messageScrollRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [inbox]);
+
+  useEffect(() => {
+    // SCROLL EFFECT FOR NOTIFICATIONS
+    notificationScrollRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [userMessages]);
+
+  // ON CLICK HANDLER FOR ENTER CLICK
+  useEffect(() => {
+    const handleEnter = (e) => {
+      // console.log(e);
+      if (e.key === "Enter") {
+        sendRef.current.click();
+      }
+    };
+
+    document.addEventListener("keydown", handleEnter);
+
+    return () => document.removeEventListener("keydown", handleEnter);
+  }, []);
+
+  // FUNCTION TO EMIT NEW MESSAGE
   function sendMessage(e) {
     e.preventDefault();
+    if (!newMessage.trim) return;
     const message = {
       name,
       room,
@@ -59,58 +116,38 @@ function Room() {
     setNewMessage("");
   }
 
-  const msgStyle = {
-    user: {
-      textAlign: "end",
-    },
-    sender: {},
-  };
+  const navigate = useNavigate();
 
   return (
-    <div>
-      <div>
-        <h2>Notifikacije</h2>
-        <div>
+    <>
+      <Container type="rooms">
+        <BackButton onClick={() => navigate(-1, { replace: true })}>
+          &larr;
+        </BackButton>
+        <h1>Welcome to ROOM: #{name}</h1>
+        <NotificationBox>
           {userMessages.map((user, idx) => {
             return <p key={idx}>{user}</p>;
           })}
-        </div>
-      </div>
-      <h1>
-        Welcome to {room}, {name}
-      </h1>
+          <div ref={notificationScrollRef}></div>
+        </NotificationBox>
 
-      <div>
-        <h3>FORMA ZA SLANJE PORUKA</h3>
-        <form>
-          <input
-            value={newMessage}
-            type="text"
-            onChange={(e) => setNewMessage(e.target.value)}
-          />
-          <button onClick={sendMessage}>SEND</button>
-        </form>
-      </div>
-      <div>
-        <h3>PORUKe:</h3>
-        <div>
+        <MessageBox>
           {inbox.map((msg, idx) => {
-            return (
-              <div
-                style={
-                  msg.sender === name ? msgStyle["user"] : msgStyle["sender"]
-                }
-                key={idx}
-              >
-                <h2>{msg.sender}</h2>
-                <p>{msg.body}</p>
-                <p>{msg.date}</p>
-              </div>
-            );
+            return <Message name={name} key={idx} msg={msg} />;
           })}
+          <div ref={messageScrollRef}></div>
+        </MessageBox>
+        <div>
+          <MessageForm onSubmit={sendMessage}>
+            <TextField value={newMessage} onChange={setNewMessage}></TextField>
+            <SendMessageButton ref={sendRef} type="submit">
+              <LiaTelegram size={30} />
+            </SendMessageButton>
+          </MessageForm>
         </div>
-      </div>
-    </div>
+      </Container>
+    </>
   );
 }
 
