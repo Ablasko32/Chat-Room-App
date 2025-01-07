@@ -1,4 +1,4 @@
-import { server } from "./config/socket.js";
+import { server, app } from "./config/socket.js";
 
 const DEFAULT_PORT = 3000;
 

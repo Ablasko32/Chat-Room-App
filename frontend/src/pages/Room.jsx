@@ -42,7 +42,7 @@ function Room() {
 
   useEffect(() => {
     async function handleSockets() {
-      socketRef.current = io("http://192.168.0.17:3000");
+      socketRef.current = io("https://192.168.0.17:3000");
       socketRef.current.on("connect", () => {
         console.log(
           "Connected to the server. Socket ID:",

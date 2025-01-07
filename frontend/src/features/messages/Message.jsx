@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 
 const StyledMessage = styled.div`
-  border-bottom: 1px solid white;
-  border-top: 1px solid white;
+  border-bottom: 0.5px solid white;
+  border-top: 0.5px solid white;
   border-radius: 4px;
-  height: 8rem;
+
   width: 80%;
   padding: 8px;
   display: flex;
@@ -16,25 +16,27 @@ const StyledMessage = styled.div`
     props.$user &&
     css`
       align-self: flex-end;
-      border-left: 1px solid white;
+      border-left: 0.5px solid white;
 
       & h2 {
-        border-bottom: 1px solid lime;
+        border-bottom: 0.5px solid lime;
       }
     `}
 
   ${(props) =>
     !props.$user &&
     css`
-      border-right: 1px solid white;
+      border-right: 0.5px solid white;
 
       & h2 {
-        border-bottom: 1px solid red;
+        border-bottom: 0.5px solid red;
       }
     `}
 
   & h2 {
     margin-bottom: 8px;
+    font-size: 1.6rem;
+    font-weight: 600;
   }
 `;
 
@@ -51,7 +53,7 @@ const MessageText = styled.p`
   word-wrap: break-word; /* Ensures long words or text wrap to the next line */
   word-break: break-word; /* Break long words that exceed container width */
   overflow-wrap: anywhere; /* Makes text wrap anywhere as needed */
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 `;
 
 function Message({ msg, name }) {

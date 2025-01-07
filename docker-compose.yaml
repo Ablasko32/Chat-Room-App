@@ -1,0 +1,12 @@
+services:
+  # backend:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   container_name: backend_api
+  #   ports:
+  #     - "3000:3000"
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379

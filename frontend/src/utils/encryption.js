@@ -1,5 +1,9 @@
 const VITE_SECRET = import.meta.env.VITE_SECRET;
 
+if (!window.crypto.subtle) {
+  throw new Error("The crypto API is not available in this environment.");
+}
+
 async function deriveKey(secret) {
   const encoder = new TextEncoder();
   const data = encoder.encode(secret + VITE_SECRET);

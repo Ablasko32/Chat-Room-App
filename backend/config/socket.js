@@ -1,17 +1,24 @@
 import express from "express";
-import http from "http";
+import https from "https";
 import { Server } from "socket.io";
+import redisClient from "./redis.js";
+import fs from "fs";
+
+// Read SSL certificate files
+const privateKey = fs.readFileSync("key.pem", "utf8");
+const certificate = fs.readFileSync("cert.pem", "utf8");
 
 const app = express();
 
-const server = http.createServer(app);
+// Create an HTTPS service using the SSL certificates
+const server = https.createServer({ key: privateKey, cert: certificate }, app);
 
 const io = new Server(server, {
   cors: {
     origin: [
-      "http://127.0.0.1:5173",
-      "http://192.168.0.17:5173",
-      "http://localhost:5173",
+      "https://127.0.0.1:5173",
+      "https://192.168.0.17:5173",
+      "https://localhost:5173",
     ], // Add all allowed origins
     methods: ["GET", "POST"], // Allowed methods
   },
@@ -35,12 +42,10 @@ io.on("connection", (socket) => {
       rooms[room] = [];
     }
     rooms[room].push({ name, socketId: socket.id });
-    // console.log("ROOMS ON JOIN", rooms);
   });
 
   // Send messages to room
   socket.on("newMessage", (message) => {
-    // console.log(message);
     const senderMessage = {
       sender: message.name,
       iv: message.iv,
@@ -57,16 +62,12 @@ io.on("connection", (socket) => {
 
     // Iterate through each room to find the user
     for (const room in rooms) {
-      // console.log(room);
-      // console.log(rooms[room]);
       const index = rooms[room].findIndex(
         (user) => user.socketId === socket.id
       );
-      // console.log(index);
+
       if (index !== -1) {
         const removed = rooms[room].splice(index, 1);
-        // console.log("REMOVED", removed);
-        // console.log("ROOMS AFTER DISCONECT", rooms);
         if (removed.length !== 0) {
           io.to(room).emit("userLeft", `User ${removed[0].name} has left room`);
         }
