@@ -12,6 +12,7 @@ import TextField, {
   SendMessageButton,
 } from "../features/ui/TextField";
 import { LiaTelegram } from "react-icons/lia";
+import { decrypt, encrypt } from "../utils/encryption";
 
 const BackButton = styled.button`
   position: absolute;
@@ -40,32 +41,47 @@ function Room() {
   const { room, name } = location.state;
 
   useEffect(() => {
-    socketRef.current = io("http://192.168.0.17:3000");
-    socketRef.current.on("connect", () => {
-      console.log("Connected to the server. Socket ID:", socketRef.current.id);
-    });
-
-    socketRef.current.emit("joinedRoom", { name: name, room });
-
-    socketRef.current.on("userJoined", (message) => {
-      console.log(message);
-      setUserMessages((prev) => {
-        return [...prev, message];
+    async function handleSockets() {
+      socketRef.current = io("http://192.168.0.17:3000");
+      socketRef.current.on("connect", () => {
+        console.log(
+          "Connected to the server. Socket ID:",
+          socketRef.current.id
+        );
       });
-    });
 
-    socketRef.current.on("userLeft", (message) => {
-      setUserMessages((prev) => {
-        return [...prev, message];
-      });
-    });
+      socketRef.current.emit("joinedRoom", { name: name, room });
 
-    socketRef.current.on("getNewMessage", (msg) => {
-      // console.log(msg);
-      setInbox((prev) => {
-        return [...prev, msg];
+      socketRef.current.on("userJoined", (message) => {
+        console.log(message);
+        setUserMessages((prev) => {
+          return [...prev, message];
+        });
       });
-    });
+
+      socketRef.current.on("userLeft", (message) => {
+        setUserMessages((prev) => {
+          return [...prev, message];
+        });
+      });
+
+      socketRef.current.on("getNewMessage", (msg) => {
+        // console.log(msg);
+
+        decrypt(msg.body, room, msg.iv).then((data) => {
+          let body = data;
+          console.log(body);
+          const message = { sender: msg.sender, body: body, date: msg.date };
+
+          console.log("CREATED MESSAGE", message);
+          // const message = decrypt(encrypted, "SECRET", iv);
+          setInbox((prev) => {
+            return [...prev, message];
+          });
+        });
+      });
+    }
+    handleSockets();
 
     return () => {
       socketRef.current.disconnect();
@@ -94,6 +110,7 @@ function Room() {
     const handleEnter = (e) => {
       // console.log(e);
       if (e.key === "Enter") {
+        e.preventDefault();
         sendRef.current.click();
       }
     };
@@ -104,13 +121,15 @@ function Room() {
   }, []);
 
   // FUNCTION TO EMIT NEW MESSAGE
-  function sendMessage(e) {
+  async function sendMessage(e) {
     e.preventDefault();
-    if (!newMessage.trim) return;
+    if (!newMessage.trim()) return;
+    const { encrypted, iv } = await encrypt(newMessage, room);
     const message = {
       name,
       room,
-      text: newMessage,
+      iv,
+      text: encrypted,
     };
     socketRef.current.emit("newMessage", message);
     setNewMessage("");

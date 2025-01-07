@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { GlobalStyle } from "../../src/GlobalStyles";
+import { GlobalStyle } from "../../GlobalStyles";
 
 const Container = styled.div`
   background-image: linear-gradient(#111010ad, #1110103b),

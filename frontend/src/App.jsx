@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainPage from "../pages/mainPage";
-import Room from "../pages/Room";
-import AppLayout from "../features/ui/AppLayout";
+import MainPage from "./pages/mainPage";
+import Room from "./pages/Room";
+import AppLayout from "./features/ui/AppLayout";
+import "./utils/encryption.js";
 
 function App() {
   return (

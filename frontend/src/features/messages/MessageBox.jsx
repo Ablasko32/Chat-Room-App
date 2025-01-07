@@ -12,6 +12,7 @@ const MessageBox = styled.div`
   flex-direction: column;
   gap: 8px;
   border-radius: 8px;
+  scrollbar-width: thin;
 `;
 
 export { MessageBox };

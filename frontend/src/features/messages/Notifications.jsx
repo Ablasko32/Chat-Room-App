@@ -12,6 +12,7 @@ const NotificationBox = styled.div`
   right: 0;
   font-size: 1.6rem;
   padding: 5px;
+  scrollbar-width: thin;
 
   @media (max-width: 1024px) {
     /* Example: change background color on small screens */

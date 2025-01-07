@@ -7,13 +7,24 @@ const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: "*",
+  cors: {
+    origin: [
+      "http://127.0.0.1:5173",
+      "http://192.168.0.17:5173",
+      "http://localhost:5173",
+    ], // Add all allowed origins
+    methods: ["GET", "POST"], // Allowed methods
+  },
 });
 
 let rooms = {};
 
 io.on("connection", (socket) => {
   console.log("user connected,sockedID", socket.id);
+
+  socket.on("connect_error", (error) => {
+    console.error("Connection failed:", error);
+  });
 
   // kada user emitira join room server ga priruzi sobi s imenom
   socket.on("joinedRoom", ({ name, room }) => {
@@ -29,12 +40,14 @@ io.on("connection", (socket) => {
 
   // Send messages to room
   socket.on("newMessage", (message) => {
-    console.log(message);
+    // console.log(message);
     const senderMessage = {
       sender: message.name,
+      iv: message.iv,
       body: message.text,
       date: new Date().toLocaleTimeString(),
     };
+    console.log("SERVER", senderMessage);
     io.to(message.room).emit("getNewMessage", senderMessage);
   });
 
@@ -49,7 +62,7 @@ io.on("connection", (socket) => {
       const index = rooms[room].findIndex(
         (user) => user.socketId === socket.id
       );
-      console.log(index);
+      // console.log(index);
       if (index !== -1) {
         const removed = rooms[room].splice(index, 1);
         // console.log("REMOVED", removed);
