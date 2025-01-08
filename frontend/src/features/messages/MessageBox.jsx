@@ -6,7 +6,7 @@ const MessageBox = styled.div`
   padding: 1rem;
   border: 1px solid white;
   overflow-y: scroll;
-  width: 80dvw;
+  width: 85dvw;
   max-width: 80rem;
   display: flex;
   flex-direction: column;

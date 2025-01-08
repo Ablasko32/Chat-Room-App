@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { useState } from "react";
 import { Container } from "../features/ui/Container";
@@ -26,10 +26,11 @@ const BackButton = styled.button`
 `;
 
 function Room() {
-  const location = useLocation();
+  const { room, name } = useParams();
   const messageScrollRef = useRef();
   const notificationScrollRef = useRef();
   const sendRef = useRef();
+  const navigate = useNavigate();
 
   // console.log(location);
   const [userMessages, setUserMessages] = useState([]);
@@ -38,7 +39,11 @@ function Room() {
 
   const socketRef = useRef();
 
-  const { room, name } = location.state;
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    console.log(token);
+    if (!token) navigate("/");
+  }, [navigate]);
 
   useEffect(() => {
     async function handleSockets() {
@@ -134,8 +139,6 @@ function Room() {
     socketRef.current.emit("newMessage", message);
     setNewMessage("");
   }
-
-  const navigate = useNavigate();
 
   return (
     <>

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import CreateRoom from "../createRoom/CreateRoom";
+import useLogin from "./useLogin";
 
 const StyledForm = styled.form`
   display: flex;
@@ -35,10 +37,14 @@ const Container = styled.div`
     /* Example: change background color on small screens */
     width: 80%;
   }
+
+  & h1 {
+    text-align: center;
+  }
 `;
 
 const StyledLabel = styled.label`
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 `;
 
 const StyledInput = styled.input`
@@ -71,16 +77,20 @@ function Homepage() {
   const [room, setRoom] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [isCreateRoomOpen, setIsCreateRoomOpen] = useState(false);
 
-  const navigate = useNavigate();
+  const { loginRoom, isLogingIn } = useLogin();
 
   function handleNavigation(e) {
     e.preventDefault();
-    if (!room || !name || !password) return;
-    if (password.split(" ").length < 5) return;
-    navigate(`/room/${room}${password}`, {
-      state: { name, room: `${room}${password}` },
-    });
+
+    loginRoom({ roomName: room, password: password, name: name });
+  }
+
+  function createRoom(e) {
+    e.preventDefault();
+    console.log("creat rooms");
+    setIsCreateRoomOpen((prev) => !prev);
   }
 
   return (
@@ -111,8 +121,16 @@ function Homepage() {
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         ></StyledInput>
-        <StyledButton onClick={handleNavigation}>GO TO ROOM</StyledButton>
+        <StyledButton
+          disabled={isLogingIn}
+          type="submit"
+          onClick={handleNavigation}
+        >
+          GO TO ROOM
+        </StyledButton>
+        <StyledButton onClick={createRoom}>CREATE ROOM</StyledButton>
       </StyledForm>
+      {isCreateRoomOpen && <CreateRoom onClose={setIsCreateRoomOpen} />}
     </Container>
   );
 }

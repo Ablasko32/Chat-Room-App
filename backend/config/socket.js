@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
     socket.join(room);
     console.log(name + " joined room: " + room);
     io.to(room).emit("userJoined", `User ${name} has joined`);
+
     if (!rooms[room]) {
       rooms[room] = [];
     }

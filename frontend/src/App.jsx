@@ -3,17 +3,23 @@ import MainPage from "./pages/mainPage";
 import Room from "./pages/Room";
 import AppLayout from "./features/ui/AppLayout";
 import "./utils/encryption.js";
+import "./services/roomsApi.js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppLayout>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/room/:name" element={<Room />} />
-        </Routes>
-      </AppLayout>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/room/:room/:name" element={<Room />} />
+          </Routes>
+        </AppLayout>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

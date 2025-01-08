@@ -1,7 +1,9 @@
 const VITE_SECRET = import.meta.env.VITE_SECRET;
 
 if (!window.crypto.subtle) {
-  throw new Error("The crypto API is not available in this environment.");
+  throw new Error(
+    "FATAL: The crypto API is not available in this environment.Check if using HTTPS!"
+  );
 }
 
 async function deriveKey(secret) {
