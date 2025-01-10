@@ -3,7 +3,7 @@ import redisClient from "../config/redis.js";
 import { generateJWT, verifyJWT } from "../utils/jwtToken.js";
 
 export const createRoom = async (req, res) => {
-  // REQUIRES NAME PASSWORD EXPIRATION SETS REDIS HASH WITH KEY room:<roomName> fields password and creator
+  // REQUIRES NAME PASSWORD EXPIRATION SETS REDIS HASH WITH KEY room:<roomName>  password
   const { name, password, expiration } = req.body;
 
   try {
@@ -52,7 +52,7 @@ export const loginRoom = async (req, res) => {
     if (!isValid || !hashedPassword)
       return res.status(401).json({ data: null, error: "Bad credentials" });
 
-    const token = generateJWT(roomName);
+    const token = generateJWT({ roomName, name });
     console.log(token);
 
     return res.status(200).json({

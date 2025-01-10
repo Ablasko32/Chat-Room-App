@@ -41,13 +41,11 @@ function Room() {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    console.log(token);
-    if (!token) navigate("/");
-  }, [navigate]);
 
-  useEffect(() => {
     async function handleSockets() {
-      socketRef.current = io("https://192.168.0.17:3000");
+      socketRef.current = io("https://192.168.0.17:3000", {
+        query: { token },
+      });
       socketRef.current.on("connect", () => {
         console.log(
           "Connected to the server. Socket ID:",

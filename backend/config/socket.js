@@ -3,6 +3,7 @@ import https from "https";
 import { Server } from "socket.io";
 import redisClient from "./redis.js";
 import fs from "fs";
+import { verifyJWT } from "../utils/jwtToken.js";
 
 // Read SSL certificate files
 const privateKey = fs.readFileSync("key.pem", "utf8");
@@ -26,6 +27,20 @@ const io = new Server(server, {
 
 let rooms = {};
 
+io.use((socket, next) => {
+  try {
+    const token = socket.handshake.query.token;
+    const data = verifyJWT(token);
+    console.log("TOKENDATA", data);
+    socket.userName = data.name;
+    socket.room = data.roomName;
+    next();
+  } catch (err) {
+    console.error("TOKEN ERR:", err.message);
+    next(new Error("Error TOKEN"));
+  }
+});
+
 io.on("connection", (socket) => {
   console.log("user connected,sockedID", socket.id);
 
@@ -33,8 +48,14 @@ io.on("connection", (socket) => {
     console.error("Connection failed:", error);
   });
 
+  socket.on("error", (exception) => {
+    console.log("SOCKET ERR", exception);
+  });
+
   // kada user emitira join room server ga priruzi sobi s imenom
-  socket.on("joinedRoom", ({ name, room }) => {
+  socket.on("joinedRoom", () => {
+    const name = socket.userName;
+    const room = socket.room;
     socket.join(room);
     console.log(name + " joined room: " + room);
     io.to(room).emit("userJoined", `User ${name} has joined`);
@@ -43,6 +64,11 @@ io.on("connection", (socket) => {
       rooms[room] = [];
     }
     rooms[room].push({ name, socketId: socket.id });
+
+    redisClient.lPush(
+      `rooms:${room}:users`,
+      JSON.stringify({ name, socketId: socket.id })
+    );
   });
 
   // Send messages to room
