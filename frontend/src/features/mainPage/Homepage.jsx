@@ -11,6 +11,9 @@ import CardContainer from "../ui/CardContainer";
 import StyledForm from "../ui/StyledForm";
 import { InputContainer } from "../ui/Input";
 
+// DISPLAYS HOMEPAGE WHERE YOU CAN CONNECT TO A ROOM OR CREATE ONE
+// USES useLogin CUSTOM HOOK TO RECIVE JWT TOKEN AND STORE IT IN LOCAL STORAGE as authToken
+
 const StyledSvg = styled.img`
   position: absolute;
   top: -60px;

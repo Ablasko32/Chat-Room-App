@@ -9,21 +9,9 @@ import CardContainer from "../ui/CardContainer";
 import { InputContainer } from "../ui/Input";
 import StyledForm from "../ui/StyledForm";
 
-// const StyledForm = styled.form`
-//   display: flex;
-//   flex-direction: column;
-
-//   gap: 12px;
-//   padding: 20px;
-//   width: 50%;
-
-//   @media (max-width: 768px) {
-//     width: 100%;
-//   }
-//   @media (max-width: 1024px) {
-//     width: 100%;
-//   }
-// `;
+// DISPLAYS CREATE ROOM FORM MODAL BY CREATING PORTAL TO DOCUMENT BODY
+// USES useCreateRoom custom hook
+// REQUIRES onClose function to close modal
 
 const StyledModal = styled.div`
   position: fixed;

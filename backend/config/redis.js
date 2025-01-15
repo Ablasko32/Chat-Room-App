@@ -11,6 +11,8 @@ redisClient.on("error", (err) => {
   throw new Error(err);
 });
 
-console.log("REDIS CONNECTED..");
+redisClient.on("connect", () => {
+  console.log("REDIS CONNECTED..");
+});
 
 export default redisClient;

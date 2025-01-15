@@ -14,6 +14,9 @@ import TextField, {
 import { LiaTelegram } from "react-icons/lia";
 import { decrypt, encrypt } from "../utils/encryption";
 
+// INDIVIDUAL ROOM , ESTABLISHES SOCKET.io CONNECTION, AUTH VIA JWT IN LOCAL STORAGE
+// PROTECTED BY ProtectedRoute via useEffect api call
+
 const BackButton = styled.button`
   position: absolute;
   top: 10px;

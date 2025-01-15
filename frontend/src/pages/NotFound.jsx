@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { StyledButton } from "../features/ui/Button";
 import { useNavigate } from "react-router-dom";
 
+// DISPLAYS DEFAULT NOT FOUND PAGE WITH BUTTON TO NAVIGATE BACK TO '/'
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;

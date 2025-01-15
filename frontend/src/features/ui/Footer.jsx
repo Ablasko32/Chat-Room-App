@@ -4,6 +4,7 @@ import { Typewriter } from "react-simple-typewriter";
 const StyledFooter = styled.footer`
   text-align: center;
   font-size: 1.2rem;
+  position: relative;
 `;
 
 const StyledTypewriter = styled.span`
