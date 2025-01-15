@@ -3,12 +3,15 @@ import styled from "styled-components";
 import CreateRoom from "../createRoom/CreateRoom";
 import useLogin from "./useLogin";
 import Lock from "../../assets/lock.svg";
-import { StyledLabel, StyledInput } from "../ui/Input";
+import { StyledLabel, StyledInput, FormError } from "../ui/Input";
 import { StyledButton } from "../ui/Button";
+import { useForm } from "react-hook-form";
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   gap: 14px;
   padding: 20px;
@@ -55,18 +58,26 @@ const StyledSvg = styled.img`
   }
 `;
 
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
 function Homepage() {
-  const [room, setRoom] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
   const [isCreateRoomOpen, setIsCreateRoomOpen] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const { loginRoom, isLogingIn } = useLogin();
 
-  function handleNavigation(e) {
-    e.preventDefault();
-
-    loginRoom({ roomName: room, password: password, name: name });
+  function handleConnect(data) {
+    console.log(data);
+    loginRoom({ ...data, roomName: data.room });
   }
 
   function createRoom(e) {
@@ -79,35 +90,46 @@ function Homepage() {
     <Container>
       <h1>Connect to a Room...</h1>
       <StyledForm>
-        <StyledLabel htmlFor="name">Nickname</StyledLabel>
-        <StyledInput
-          id="name"
-          value={name}
-          type="text"
-          placeholder="name"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <StyledLabel htmlFor="room">Room name</StyledLabel>
-        <StyledInput
-          id="room"
-          value={room}
-          type="text"
-          placeholder="room"
-          onChange={(e) => setRoom(e.target.value)}
-        ></StyledInput>
-        <StyledLabel htmlFor="password">Password</StyledLabel>
-        <StyledInput
-          id="password"
-          value={password}
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        ></StyledInput>
+        <InputContainer>
+          <StyledLabel htmlFor="name">Nickname</StyledLabel>
+          <StyledInput
+            id="name"
+            type="text"
+            placeholder="name"
+            {...register("name", {
+              required: "Nickname is required",
+              minLength: { value: 5, message: "Min lenght is 5" },
+            })}
+          />
+          {errors?.name && <FormError>{errors.name.message}</FormError>}
+        </InputContainer>
+        <InputContainer>
+          <StyledLabel htmlFor="room">Room name</StyledLabel>
+          <StyledInput
+            id="room"
+            type="text"
+            placeholder="room"
+            {...register("room", {
+              required: "Room name is required",
+            })}
+          ></StyledInput>
+          {errors?.room && <FormError>{errors.room.message}</FormError>}
+        </InputContainer>
+        <InputContainer>
+          <StyledLabel htmlFor="password">Password</StyledLabel>
+          <StyledInput
+            id="password"
+            type="password"
+            placeholder="password"
+            {...register("password", { required: "Password is required" })}
+          ></StyledInput>
+          {errors?.password && <FormError>{errors.password.message}</FormError>}
+        </InputContainer>
         <StyledButton
           $primary
           disabled={isLogingIn}
           type="submit"
-          onClick={handleNavigation}
+          onClick={handleSubmit(handleConnect)}
         >
           GO TO ROOM
         </StyledButton>

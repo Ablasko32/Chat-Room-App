@@ -7,6 +7,7 @@ export const createRoom = async (req, res) => {
   const { name, password, expiration } = req.body;
 
   try {
+    // IF NOT NAME OR NOT PASSWORD OR NOT EXPIRATION THROW ERROR
     if (!name || !password || !expiration)
       return res.status(400).json({
         data: null,
@@ -20,7 +21,17 @@ export const createRoom = async (req, res) => {
         error: "Error hashing password",
       });
     }
-    // CREATING ROOM IN REDIS DB
+
+    // CHECK TO SEE IF ROOM NAME EXISTS
+    const roomExists = await redisClient.EXISTS(`rooms:${name}`);
+    if (roomExists == 1) {
+      return res.status(409).json({
+        data: null,
+        error: "Room with that name exists",
+      });
+    }
+
+    // ELSE CREATING ROOM IN REDIS DB
     await redisClient.HSET(`rooms:${name}`, ["password", hashedPassword]);
     await redisClient.EXPIRE(`rooms:${name}`, expiration);
 
@@ -66,11 +77,16 @@ export const loginRoom = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
-  const { token } = req.body;
+  const { token, paramData } = req.body;
+
+  // COMPARES TOKEN DATA WITH PARAMDATA AND GIVES BACK RESPONSE
   try {
-    if (!verifyJWT(token))
+    const data = verifyJWT(token);
+    if (paramData.roomName === data.roomName && paramData.name === data.name) {
+      return res.status(200).json({ data: { valid: true }, error: null });
+    } else {
       return res.status(401).json({ data: null, error: "Token not valid" });
-    return res.status(200).json({ data: { valid: true }, error: null });
+    }
   } catch (err) {
     res.status(401).json({ data: null, error: "Token not valid" });
   }

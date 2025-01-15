@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { loginToRoom } from "../../services/roomsApi";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function useLogin() {
   const navigate = useNavigate();
@@ -8,7 +9,8 @@ export default function useLogin() {
   const { mutate: loginRoom, isPending: isLogingIn } = useMutation({
     mutationFn: (data) => loginToRoom(data),
     onSuccess: (data) => {
-      console.log("SUCESS", data);
+      // console.log("SUCESS", data);
+      toast.success("Login sucesfull");
 
       const { token, room, name } = data;
 
@@ -18,6 +20,7 @@ export default function useLogin() {
     },
     onError: (err) => {
       console.error(err);
+      toast.error(err.message);
     },
   });
   return { loginRoom, isLogingIn };

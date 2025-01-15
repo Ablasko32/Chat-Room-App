@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
     --soft-border:#5f738a;
     --background-color:#2e2d2c;
     --bg-lifted:#373635;
+    --red-error:#E57373
   }
   
   
@@ -23,7 +24,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    color:white;
+    color:#EDEDED;
     background-color: var(--background-color);
     
   }

@@ -2,7 +2,7 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import useCreateRoom from "./useCreateRoom";
 import { useForm } from "react-hook-form";
-import { StyledLabel, StyledInput, StyledSelect } from "../ui/Input";
+import { StyledLabel, StyledInput, StyledSelect, FormError } from "../ui/Input";
 import { StyledButton } from "../ui/Button";
 
 const Container = styled.div`
@@ -54,14 +54,24 @@ const StyledModal = styled.div`
   align-items: center;
 `;
 
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
 function CreateRoom({ onClose }) {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const { createNewRoom, isCreatingRoom } = useCreateRoom();
 
   function onSubmit(data) {
-    console.log("DATA", data);
-    if (!data) return;
+    // console.log("DATA", data, "ERRORS", errors);
+    if (!data.name || !data.password) return;
     createNewRoom(data);
     onClose();
   }
@@ -71,27 +81,46 @@ function CreateRoom({ onClose }) {
       <Container>
         <h1>Create your Room...</h1>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <StyledLabel htmlFor="room">Room name</StyledLabel>
-          <StyledInput
-            id="room"
-            type="text"
-            placeholder="room"
-            {...register("name")}
-          ></StyledInput>
-          <StyledLabel htmlFor="password">Strong password!</StyledLabel>
-          <StyledInput
-            id="password"
-            type="password"
-            placeholder="password"
-            {...register("password")}
-          ></StyledInput>
-          <StyledLabel htmlFor="expiration">Self destruct</StyledLabel>
-          <StyledSelect id="expiration" {...register("expiration")}>
-            <option value={60 * 60}>1 Hour</option>
-            <option value={3 * 60 * 60}>3 Hours</option>
-            <option value={12 * 60 * 60}>12 Hours</option>
-            <option value={24 * 60 * 60}>24 Hours</option>
-          </StyledSelect>
+          <InputContainer>
+            <StyledLabel htmlFor="room">Room name</StyledLabel>
+            <StyledInput
+              id="room"
+              type="text"
+              placeholder="room"
+              {...register("name", {
+                required: "Name is required",
+                minLength: { value: 8, message: "Minimum length is 8" },
+              })}
+            ></StyledInput>
+            {errors?.name && <FormError>{errors.name.message}</FormError>}
+          </InputContainer>
+          <InputContainer>
+            <StyledLabel htmlFor="password">Strong password!</StyledLabel>
+            <StyledInput
+              id="password"
+              type="password"
+              placeholder="password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Minimum length is 8",
+                },
+              })}
+            ></StyledInput>
+            {errors?.password && (
+              <FormError>{errors.password.message}</FormError>
+            )}
+          </InputContainer>
+          <InputContainer>
+            <StyledLabel htmlFor="expiration">Self destruct</StyledLabel>
+            <StyledSelect id="expiration" {...register("expiration")}>
+              <option value={60 * 60}>1 Hour</option>
+              <option value={3 * 60 * 60}>3 Hours</option>
+              <option value={12 * 60 * 60}>12 Hours</option>
+              <option value={24 * 60 * 60}>24 Hours</option>
+            </StyledSelect>
+          </InputContainer>
 
           <StyledButton type="submit" $primary disabled={isCreatingRoom}>
             CREATE ROOM

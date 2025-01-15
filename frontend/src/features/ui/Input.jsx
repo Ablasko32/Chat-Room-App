@@ -41,4 +41,10 @@ const StyledSelect = styled.select`
   }
 `;
 
-export { StyledLabel, StyledInput, StyledSelect };
+const FormError = styled.p`
+  color: var(--red-error);
+  font-size: 1.2rem;
+  text-align: center;
+`;
+
+export { StyledLabel, StyledInput, StyledSelect, FormError };
