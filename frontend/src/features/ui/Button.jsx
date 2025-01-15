@@ -14,11 +14,14 @@ const StyledButton = styled.button`
   border: 1px solid var(--soft-border);
   color: white;
   cursor: pointer;
+  box-shadow: 0px 0px 2px 2px rgb(95, 115, 138, 0.2);
+  transition: all 0.3s;
 
   ${(props) =>
     props.$primary &&
     css`
       background-color: var(--primary-color);
+      border: 1px solid var(--primary-color);
     `};
 
   ${(props) =>

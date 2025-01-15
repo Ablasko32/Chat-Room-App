@@ -27,13 +27,15 @@ const StyledSelect = styled.select`
   color: white;
   padding: 4px 10px;
   font-size: 2rem;
-  background-color: transparent;
+  background-color: var(--background-color);
   border: none;
+  width: 26.5rem;
   border: 1px solid var(--soft-border);
   border-radius: 5px;
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image: none;
+  cursor: pointer;
 
   &:focus {
     border: 1px solid var(--primary-color);
@@ -47,4 +49,10 @@ const FormError = styled.p`
   text-align: center;
 `;
 
-export { StyledLabel, StyledInput, StyledSelect, FormError };
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+export { StyledLabel, StyledInput, StyledSelect, FormError, InputContainer };

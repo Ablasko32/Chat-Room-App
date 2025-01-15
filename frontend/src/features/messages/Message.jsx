@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 
 const StyledMessage = styled.div`
-  border-bottom: 0.5px solid #5f738a;
-  border-top: 0.5px solid #5f738a;
+  border-bottom: 0.5px solid var(--soft-border);
+  border-top: 0.5px solid var(--soft-border);
   border-radius: 4px;
 
   width: 80%;
@@ -17,10 +17,10 @@ const StyledMessage = styled.div`
     props.$user &&
     css`
       align-self: flex-end;
-      border-left: 0.5px solid #5f738a;
+      border-left: 0.5px solid var(--soft-border);
 
       & h2 {
-        border-bottom: 0.5px solid #4a90e2;
+        border-bottom: 0.5px solid var(--light-green);
       }
     `}
 
@@ -30,7 +30,7 @@ const StyledMessage = styled.div`
       border-right: 0.5px solid white;
 
       & h2 {
-        border-bottom: 0.5px solid red;
+        border-bottom: 0.5px solid var(--primary-color);
       }
     `}
 

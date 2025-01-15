@@ -20,6 +20,7 @@ const Layout = styled.div`
 function AppLayout({ children }) {
   return (
     <>
+      {/* global app style */}
       <GlobalStyle />
       <Layout>
         <Container>{children}</Container>

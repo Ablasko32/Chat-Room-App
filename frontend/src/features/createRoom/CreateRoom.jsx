@@ -4,42 +4,26 @@ import useCreateRoom from "./useCreateRoom";
 import { useForm } from "react-hook-form";
 import { StyledLabel, StyledInput, StyledSelect, FormError } from "../ui/Input";
 import { StyledButton } from "../ui/Button";
+import Header from "../ui/Header";
+import CardContainer from "../ui/CardContainer";
+import { InputContainer } from "../ui/Input";
+import StyledForm from "../ui/StyledForm";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  /* backdrop-filter: blur(20px); */
-  padding: 20px;
-  height: 80%;
-  width: 80%;
-  border: 1px solid #5f738a;
-  border-radius: 10px;
-  position: relative;
-  max-width: 80rem;
+// const StyledForm = styled.form`
+//   display: flex;
+//   flex-direction: column;
 
-  & h1 {
-    text-align: center;
-  }
-`;
+//   gap: 12px;
+//   padding: 20px;
+//   width: 50%;
 
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  gap: 12px;
-  padding: 20px;
-  width: 50%;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
-`;
+//   @media (max-width: 768px) {
+//     width: 100%;
+//   }
+//   @media (max-width: 1024px) {
+//     width: 100%;
+//   }
+// `;
 
 const StyledModal = styled.div`
   position: fixed;
@@ -52,12 +36,16 @@ const StyledModal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+  animation: 0.2s show ease-in-out forwards;
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  @keyframes show {
+    from {
+      opacity: 0%;
+      rotate: -60deg;
+    }
+    to {
+    }
+  }
 `;
 
 function CreateRoom({ onClose }) {
@@ -78,8 +66,9 @@ function CreateRoom({ onClose }) {
 
   return createPortal(
     <StyledModal>
-      <Container>
-        <h1>Create your Room...</h1>
+      <CardContainer>
+        <Header>CREATE</Header>
+        <p>Privacy.</p>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <InputContainer>
             <StyledLabel htmlFor="room">Room name</StyledLabel>
@@ -127,7 +116,7 @@ function CreateRoom({ onClose }) {
           </StyledButton>
           <StyledButton onClick={() => onClose()}>Cancel</StyledButton>
         </StyledForm>
-      </Container>
+      </CardContainer>
     </StyledModal>,
     document.body
   );

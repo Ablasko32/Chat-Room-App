@@ -17,7 +17,7 @@ const Container = styled.div`
   ${(props) =>
     props.type === "rooms" &&
     css`
-      height: 95%;
+      height: 60rem;
       width: 95% !important;
       display: grid;
       grid-template-rows: 13% 1fr 18%;
@@ -25,6 +25,14 @@ const Container = styled.div`
       padding: 10px;
       padding-top: 40px;
       position: relative;
+
+      @media (min-width: 768px) {
+        height: 90rem;
+      }
+
+      @media (min-width: 1240px) {
+        height: 100rem;
+      }
     `};
 `;
 
