@@ -93,18 +93,12 @@ function CreateRoom({ onClose }) {
             <option value={24 * 60 * 60}>24 Hours</option>
           </StyledSelect>
 
-          <StyledButton $primary disabled={isCreatingRoom}>
+          <StyledButton type="submit" $primary disabled={isCreatingRoom}>
             CREATE ROOM
           </StyledButton>
+          <StyledButton onClick={() => onClose()}>Cancel</StyledButton>
         </StyledForm>
       </Container>
-      <StyledButton
-        $back
-        style={{ position: "absolute", top: "10px", right: "10px" }}
-        onClick={() => onClose()}
-      >
-        Back
-      </StyledButton>
     </StyledModal>,
     document.body
   );

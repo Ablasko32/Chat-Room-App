@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 const StyledButton = styled.button`
+  text-transform: uppercase;
   margin-top: 0.5rem;
   font-size: 1.3rem;
   width: 70%;
