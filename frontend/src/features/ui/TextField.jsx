@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledTextArea = styled.textarea`
-  background-color: #1c1d1d40 !important;
+  background-color: var(--bg-lifted) !important;
   border-radius: 4px;
   padding: 4px;
   resize: none;
@@ -9,7 +9,7 @@ const StyledTextArea = styled.textarea`
 
   &:focus {
     outline: none;
-    border: 1px solid red;
+    border: 1px solid var(--primary-color);
   }
 `;
 
@@ -22,10 +22,13 @@ export const SendMessageButton = styled.button`
   position: absolute;
   cursor: pointer;
   border: none;
-  color: white;
+  color: var(--primary-color);
   overflow: hidden;
-
   outline: none;
+  &:hover {
+    transform: scale(1.1);
+    opacity: 80%;
+  }
 `;
 
 export const MessageForm = styled.form`

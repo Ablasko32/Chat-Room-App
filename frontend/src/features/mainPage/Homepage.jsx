@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CreateRoom from "../createRoom/CreateRoom";
 import useLogin from "./useLogin";
+import Lock from "../../assets/lock.svg";
+import { StyledLabel, StyledInput } from "../ui/Input";
+import { StyledButton } from "../ui/Button";
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
 
-  gap: 12px;
+  gap: 14px;
   padding: 20px;
   width: 50%;
 
@@ -25,52 +27,32 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff35;
-  backdrop-filter: blur(20px);
+  background-color: transparent;
+  /* backdrop-filter: blur(20px); */
   padding: 20px;
-  height: 60%;
-  width: 50%;
-  border: 1px solid white;
+  height: 80%;
+  width: 80%;
+  border: 1px solid #5f738a;
   border-radius: 10px;
-
-  @media (max-width: 1024px) {
-    /* Example: change background color on small screens */
-    width: 80%;
-  }
+  position: relative;
+  max-width: 80rem;
 
   & h1 {
     text-align: center;
   }
 `;
 
-const StyledLabel = styled.label`
-  font-size: 1.5rem;
-`;
+const StyledSvg = styled.img`
+  position: absolute;
+  top: -60px;
+  right: -20px;
+  height: 120px;
+  transform: rotate(15deg);
 
-const StyledInput = styled.input`
-  padding: 4px 10px;
-  font-size: 2rem;
-  background-color: transparent;
-  border: none;
-  border: 1px solid white;
-  border-radius: 5px;
-
-  &:focus {
-    border: 1px solid red;
-    outline: none;
+  @media (min-width: 768px) {
+    height: 200px;
+    top: -100px;
   }
-`;
-
-const StyledButton = styled.button`
-  width: 50%;
-  padding: 5px 10px;
-  align-self: center;
-  border-radius: 5px;
-  background-color: transparent;
-  border: none;
-  border: 1px solid white;
-  color: white;
-  cursor: pointer;
 `;
 
 function Homepage() {
@@ -95,7 +77,7 @@ function Homepage() {
 
   return (
     <Container>
-      <h1>Give us your name and connect to a room!</h1>
+      <h1>Connect to a Room...</h1>
       <StyledForm>
         <StyledLabel htmlFor="name">Nickname</StyledLabel>
         <StyledInput
@@ -113,15 +95,16 @@ function Homepage() {
           placeholder="room"
           onChange={(e) => setRoom(e.target.value)}
         ></StyledInput>
-        <StyledLabel htmlFor="password">Pass phrase 5 words!</StyledLabel>
+        <StyledLabel htmlFor="password">Password</StyledLabel>
         <StyledInput
           id="password"
           value={password}
-          type="text"
+          type="password"
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         ></StyledInput>
         <StyledButton
+          $primary
           disabled={isLogingIn}
           type="submit"
           onClick={handleNavigation}
@@ -129,6 +112,7 @@ function Homepage() {
           GO TO ROOM
         </StyledButton>
         <StyledButton onClick={createRoom}>CREATE ROOM</StyledButton>
+        <StyledSvg src={Lock}></StyledSvg>
       </StyledForm>
       {isCreateRoomOpen && <CreateRoom onClose={setIsCreateRoomOpen} />}
     </Container>

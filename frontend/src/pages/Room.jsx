@@ -20,9 +20,13 @@ const BackButton = styled.button`
   left: 10px;
   background-color: transparent;
   border: none;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: white;
   cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 function Room() {
@@ -144,7 +148,11 @@ function Room() {
         <BackButton onClick={() => navigate(-1, { replace: true })}>
           &larr;
         </BackButton>
-        <h1>Welcome to ROOM: #{name}</h1>
+        <div>
+          <h2>User: {name}</h2>
+          <h2>Room: {room}</h2>
+        </div>
+
         <NotificationBox>
           {userMessages.map((user, idx) => {
             return <p key={idx}>{user}</p>;

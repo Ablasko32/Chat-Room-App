@@ -2,24 +2,23 @@ import { createPortal } from "react-dom";
 import styled from "styled-components";
 import useCreateRoom from "./useCreateRoom";
 import { useForm } from "react-hook-form";
+import { StyledLabel, StyledInput, StyledSelect } from "../ui/Input";
+import { StyledButton } from "../ui/Button";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff35;
-  backdrop-filter: blur(20px);
+  background-color: transparent;
+  /* backdrop-filter: blur(20px); */
   padding: 20px;
-  height: 60%;
-  width: 50%;
-  border: 1px solid white;
+  height: 80%;
+  width: 80%;
+  border: 1px solid #5f738a;
   border-radius: 10px;
-
-  @media (max-width: 1024px) {
-    /* Example: change background color on small screens */
-    width: 80%;
-  }
+  position: relative;
+  max-width: 80rem;
 
   & h1 {
     text-align: center;
@@ -49,58 +48,10 @@ const StyledModal = styled.div`
   width: 100%;
   height: 100dvh;
   z-index: 20;
-  background-color: #ffffff61;
-  backdrop-filter: blur(10px);
+  background-color: #2e2d2c;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const StyledLabel = styled.label`
-  font-size: 1.5rem;
-`;
-
-const StyledInput = styled.input`
-  padding: 4px 10px;
-  font-size: 2rem;
-  background-color: transparent;
-  border: none;
-  border: 1px solid white;
-  border-radius: 5px;
-
-  &:focus {
-    border: 1px solid red;
-    outline: none;
-  }
-`;
-
-const StyledButton = styled.button`
-  width: 50%;
-  padding: 5px 10px;
-  align-self: center;
-  border-radius: 5px;
-  background-color: transparent;
-  border: none;
-  border: 1px solid white;
-  color: white;
-  cursor: pointer;
-`;
-
-const StyledSelect = styled.select`
-  padding: 4px 10px;
-  font-size: 2rem;
-  background-color: transparent;
-  border: none;
-  border: 1px solid white;
-  border-radius: 5px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: none;
-
-  &:focus {
-    border: 1px solid red;
-    outline: none;
-  }
 `;
 
 function CreateRoom({ onClose }) {
@@ -118,6 +69,7 @@ function CreateRoom({ onClose }) {
   return createPortal(
     <StyledModal>
       <Container>
+        <h1>Create your Room...</h1>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <StyledLabel htmlFor="room">Room name</StyledLabel>
           <StyledInput
@@ -129,7 +81,7 @@ function CreateRoom({ onClose }) {
           <StyledLabel htmlFor="password">Strong password!</StyledLabel>
           <StyledInput
             id="password"
-            type="text"
+            type="password"
             placeholder="password"
             {...register("password")}
           ></StyledInput>
@@ -141,15 +93,18 @@ function CreateRoom({ onClose }) {
             <option value={24 * 60 * 60}>24 Hours</option>
           </StyledSelect>
 
-          <StyledButton disabled={isCreatingRoom}>CREATE ROOM</StyledButton>
+          <StyledButton $primary disabled={isCreatingRoom}>
+            CREATE ROOM
+          </StyledButton>
         </StyledForm>
       </Container>
-      <button
+      <StyledButton
+        $back
         style={{ position: "absolute", top: "10px", right: "10px" }}
         onClick={() => onClose()}
       >
-        Close
-      </button>
+        Back
+      </StyledButton>
     </StyledModal>,
     document.body
   );

@@ -1,14 +1,15 @@
 import styled, { css } from "styled-components";
 
 const StyledMessage = styled.div`
-  border-bottom: 0.5px solid white;
-  border-top: 0.5px solid white;
+  border-bottom: 0.5px solid #5f738a;
+  border-top: 0.5px solid #5f738a;
   border-radius: 4px;
 
   width: 80%;
   padding: 8px;
   display: flex;
   flex-direction: column;
+  max-width: 50rem;
 
   background-color: #1c1d1d40;
 
@@ -16,10 +17,10 @@ const StyledMessage = styled.div`
     props.$user &&
     css`
       align-self: flex-end;
-      border-left: 0.5px solid white;
+      border-left: 0.5px solid #5f738a;
 
       & h2 {
-        border-bottom: 0.5px solid lime;
+        border-bottom: 0.5px solid #4a90e2;
       }
     `}
 

@@ -5,14 +5,14 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff35;
-  backdrop-filter: blur(20px);
+  background-color: transparent;
+
   padding: 20px;
   height: 50%;
   width: 50%;
-  border: 1px solid white;
+  border: 1px solid var(--soft-border);
   border-radius: 10px;
-  max-width: 150rem;
+  max-width: 100rem;
 
   ${(props) =>
     props.type === "rooms" &&
@@ -26,11 +26,6 @@ const Container = styled.div`
       padding-top: 40px;
       position: relative;
     `};
-
-  @media (max-width: 1024px) {
-    /* Example: change background color on small screens */
-    width: 80%;
-  }
 `;
 
 export { Container };
