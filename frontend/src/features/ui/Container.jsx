@@ -20,7 +20,7 @@ const Container = styled.div`
       height: 60rem;
       width: 95% !important;
       display: grid;
-      grid-template-rows: 13% 1fr 18%;
+      grid-template-rows: 14% 1fr 18%;
       position: relative;
       padding: 10px;
       padding-top: 40px;

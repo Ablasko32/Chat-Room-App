@@ -14,16 +14,33 @@ const StyledRow = styled.h2`
   gap: 0.5rem;
 `;
 
+const StyledData = styled.p`
+  max-width: 12rem;
+  word-break: break-all;
+`;
+
+const StyledIcon = styled.span`
+  font-size: 2.2rem;
+  color: var(--secondary-color);
+`;
+
 // DISPLAYS USER NAME AND ROOM NAME
 function RoomData({ name, room }) {
   return (
     <Container>
       <StyledRow>
-        <CiUser color="var(--secondary-color)" size={20} /> <span>{name}</span>
+        <StyledIcon>
+          <CiUser />{" "}
+        </StyledIcon>
+
+        <StyledData>{name}</StyledData>
       </StyledRow>
       <StyledRow>
-        <PiHouseThin color="var(--secondary-color)" size={20} />
-        <span>{room}</span>
+        <StyledIcon>
+          <PiHouseThin />
+        </StyledIcon>
+
+        <StyledData>{room}</StyledData>
       </StyledRow>
     </Container>
   );
