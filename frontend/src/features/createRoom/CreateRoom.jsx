@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import useCreateRoom from "./useCreateRoom";
 import { useForm } from "react-hook-form";
 import { StyledLabel, StyledInput, StyledSelect, FormError } from "../ui/Input";
@@ -8,6 +8,7 @@ import Header from "../ui/Header";
 import CardContainer from "../ui/CardContainer";
 import { InputContainer } from "../ui/Input";
 import StyledForm from "../ui/StyledForm";
+import { useState } from "react";
 
 // DISPLAYS CREATE ROOM FORM MODAL BY CREATING PORTAL TO DOCUMENT BODY
 // USES useCreateRoom custom hook
@@ -26,6 +27,19 @@ const StyledModal = styled.div`
   align-items: center;
   animation: 0.2s show ease-in-out forwards;
 
+  ${(props) =>
+    props.$closing &&
+    css`
+      animation: 0.2s hide ease-in-out forwards;
+
+      @keyframes hide {
+        to {
+          rotate: 60deg;
+          opacity: 0;
+        }
+      }
+    `}
+
   @keyframes show {
     from {
       opacity: 0%;
@@ -37,6 +51,9 @@ const StyledModal = styled.div`
 `;
 
 function CreateRoom({ onClose }) {
+  // FOR CLOSING ANIMATION IN SYNERGY WITH $closing MODAL PROP
+  const [isClosing, setClosing] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -52,8 +69,16 @@ function CreateRoom({ onClose }) {
     onClose();
   }
 
+  function closeModal(e) {
+    setClosing(true);
+    e.preventDefault();
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  }
+
   return createPortal(
-    <StyledModal>
+    <StyledModal $closing={isClosing ? true : false}>
       <CardContainer>
         <Header>CREATE</Header>
         <p>Privacy.</p>
@@ -102,7 +127,7 @@ function CreateRoom({ onClose }) {
           <StyledButton type="submit" $primary disabled={isCreatingRoom}>
             CREATE ROOM
           </StyledButton>
-          <StyledButton onClick={() => onClose()}>Cancel</StyledButton>
+          <StyledButton onClick={closeModal}>Cancel</StyledButton>
         </StyledForm>
       </CardContainer>
     </StyledModal>,
