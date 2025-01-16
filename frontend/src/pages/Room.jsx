@@ -101,7 +101,7 @@ function Room() {
       });
 
       socketRef.current.on("getNewMessage", (msg) => {
-        console.log("INDIVIDUAL MSG", msg);
+        // console.log("INDIVIDUAL MSG", msg);
         queryClient.setQueryData(["messages", room], (oldData) => {
           return [...oldData, msg];
         });
