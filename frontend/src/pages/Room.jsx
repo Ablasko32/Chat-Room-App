@@ -17,6 +17,8 @@ import toast from "react-hot-toast";
 import useGetAllMessages from "../features/messages/useGetAllMessages";
 import { Buffer } from "buffer";
 import { useQueryClient } from "@tanstack/react-query";
+import Spinner from "../features/ui/Spinner";
+import DefaultError from "../features/ui/DefaultError";
 
 // INDIVIDUAL ROOM , ESTABLISHES SOCKET.io CONNECTION, AUTH VIA JWT IN LOCAL STORAGE
 // PROTECTED BY ProtectedRoute via useEffect api call
@@ -175,8 +177,8 @@ function Room() {
     setNewMessage("");
   }
 
-  if (isPending) return <p>Loading....</p>;
-  if (error) return <p>{error.message}</p>;
+  if (isPending) return <Spinner />;
+  if (error) return <DefaultError>{error.message}</DefaultError>;
 
   return (
     <>

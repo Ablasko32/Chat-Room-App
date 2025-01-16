@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../config/axios";
+import Spinner from "./Spinner";
 
 // COMPARES DATA STORED IN LOCAL STORAGE WITH PARAMS OF ACESSED URL AND REDIRECTS OR LETS GO
 // BACKEND ROUTE IS VERIFY JWT
@@ -43,7 +44,7 @@ function ProtectedRoute({ children }) {
   }, [name, room, navigate]);
 
   // Better loader required
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Spinner />;
 
   if (isAuth) return children;
 
