@@ -11,6 +11,8 @@ export const GlobalStyle = createGlobalStyle`
     --bg-lifted:#373635;
     --red-error:#E57373;
     --light-green:#a6d49f;
+    --user-msg-color:#3e668e;
+    --frend-msg-color:#2d2d2c;
   }
   
   
@@ -38,3 +40,5 @@ export const GlobalStyle = createGlobalStyle`
     
   }
 `;
+
+// #3b6b9b;

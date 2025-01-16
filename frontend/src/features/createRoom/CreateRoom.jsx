@@ -66,9 +66,13 @@ function CreateRoom({ onClose }) {
     // console.log("DATA", data, "ERRORS", errors);
     if (!data.name || !data.password) return;
     createNewRoom(data);
-    onClose();
+    setClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 300);
   }
 
+  // DELAYS TO GIVE TIME TO CLOSING ANIMATIONS
   function closeModal(e) {
     setClosing(true);
     e.preventDefault();

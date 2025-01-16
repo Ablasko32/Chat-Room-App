@@ -2,44 +2,76 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { decrypt } from "../../utils/encryption";
+import { PiUserLight } from "react-icons/pi";
 
 const StyledMessage = styled.div`
-  border-bottom: 0.5px solid var(--soft-border);
-  border-top: 0.5px solid var(--soft-border);
-  border-radius: 4px;
-
+  border-radius: 14px;
+  position: relative;
   width: 80%;
   padding: 8px;
   display: flex;
   flex-direction: column;
-  max-width: 50rem;
+  max-width: 40rem;
+  animation: 0.3s show ease-in-out forwards;
 
-  background-color: #1c1d1d40;
+  /* subtle message popup */
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
+  background-color: var(--user-msg-color);
   ${(props) =>
     props.$user &&
     css`
       align-self: flex-end;
-      border-left: 0.5px solid var(--soft-border);
       border-bottom-right-radius: 0px !important;
 
+      &::after {
+        rotate: -8deg;
+        content: "";
+        height: 10px;
+        width: 8px;
+        background-color: inherit;
+        border-bottom-left-radius: 100%;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        transform: translateY(40%);
+      }
+
       & h2 {
-        border-bottom: 0.5px solid var(--light-green);
+        border-bottom: 0.5px solid white;
       }
     `}
-
   ${(props) =>
     !props.$user &&
     css`
-      border-right: 0.5px solid white;
       border-bottom-left-radius: 0px !important;
+      background-color: var(--frend-msg-color);
+
+      &::after {
+        rotate: 8deg;
+        content: "";
+        height: 10px;
+        width: 8px;
+        background-color: inherit;
+        border-bottom-right-radius: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        transform: translateY(40%);
+      }
 
       & h2 {
-        border-bottom: 0.5px solid var(--primary-color);
+        border-bottom: 0.5px solid white;
       }
     `}
-
-  & h2 {
+    & h2 {
     margin-bottom: 8px;
     font-size: 1.6rem;
     font-weight: 600;
@@ -51,7 +83,8 @@ const Date = styled.p`
   margin-top: auto;
   padding: 2px;
   font-style: italic;
-  color: #fffcfccb;
+  color: #fffcfca4;
+  /* #fffcfccb; */
 `;
 
 const MessageText = styled.p`
@@ -59,7 +92,13 @@ const MessageText = styled.p`
   word-wrap: break-word; /* Ensures long words or text wrap to the next line */
   word-break: break-word; /* Break long words that exceed container width */
   overflow-wrap: anywhere; /* Makes text wrap anywhere as needed */
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+`;
+
+const StyledName = styled.h2`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 function Message({ msg, name }) {
@@ -76,7 +115,10 @@ function Message({ msg, name }) {
 
   return (
     <StyledMessage $user={msg.sender === name ? true : false}>
-      <h2>#{msg.sender}</h2>
+      <StyledName>
+        <PiUserLight />
+        <span>{msg.sender}</span>
+      </StyledName>
       <MessageText>{body}</MessageText>
       <Date>{msg.date}</Date>
     </StyledMessage>

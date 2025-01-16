@@ -19,6 +19,8 @@ import { Buffer } from "buffer";
 import { useQueryClient } from "@tanstack/react-query";
 import Spinner from "../features/ui/Spinner";
 import DefaultError from "../features/ui/DefaultError";
+import RoomData from "../features/createRoom/RoomData";
+import { CiLogout } from "react-icons/ci";
 
 // INDIVIDUAL ROOM , ESTABLISHES SOCKET.io CONNECTION, AUTH VIA JWT IN LOCAL STORAGE
 // PROTECTED BY ProtectedRoute via useEffect api call
@@ -29,7 +31,7 @@ const BackButton = styled.button`
   left: 10px;
   background-color: transparent;
   border: none;
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: white;
   cursor: pointer;
 
@@ -184,12 +186,9 @@ function Room() {
     <>
       <Container type="rooms">
         <BackButton onClick={() => navigate(-1, { replace: true })}>
-          &larr;
+          <CiLogout />
         </BackButton>
-        <div>
-          <h2>User: {name}</h2>
-          <h2>Room: {room}</h2>
-        </div>
+        <RoomData name={name} room={room} />
 
         <NotificationBox>
           {userMessages.map((user, idx) => {
