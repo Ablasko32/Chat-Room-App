@@ -14,6 +14,9 @@ import TextField, {
 import { LiaTelegram } from "react-icons/lia";
 import { decrypt, encrypt } from "../utils/encryption";
 import toast from "react-hot-toast";
+import useGetAllMessages from "../features/messages/useGetAllMessages";
+import { Buffer } from "buffer";
+import { useQueryClient } from "@tanstack/react-query";
 
 // INDIVIDUAL ROOM , ESTABLISHES SOCKET.io CONNECTION, AUTH VIA JWT IN LOCAL STORAGE
 // PROTECTED BY ProtectedRoute via useEffect api call
@@ -47,6 +50,25 @@ function Room() {
 
   const socketRef = useRef();
 
+  // GET ALL MESSAGES FOR ROOM
+  const { data, isPending, error } = useGetAllMessages(room);
+  // console.log(data, isPending, error);
+
+  const parsedData = data?.map((el) => {
+    // CONVERTING [object,object] to buffer
+
+    el.body = Buffer.from(el.body);
+    el.iv = Buffer.from(el.iv);
+    const message = {
+      ...el,
+    };
+    return message;
+  });
+
+  // console.log("PARSED DATA", parsedData);
+
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
@@ -55,10 +77,10 @@ function Room() {
         query: { token },
       });
       socketRef.current.on("connect", () => {
-        console.log(
-          "Connected to the server. Socket ID:",
-          socketRef.current.id
-        );
+        // console.log(
+        //   "Connected to the server. Socket ID:",
+        //   socketRef.current.id
+        // );
       });
 
       socketRef.current.emit("joinedRoom", { name: name, room });
@@ -77,8 +99,10 @@ function Room() {
       });
 
       socketRef.current.on("getNewMessage", (msg) => {
-        // console.log(msg);
-
+        console.log("INDIVIDUAL MSG", msg);
+        queryClient.setQueryData(["messages", room], (oldData) => {
+          return [...oldData, msg];
+        });
         decrypt(msg.body, room, msg.iv).then((data) => {
           let body = data;
           // console.log(body);
@@ -86,6 +110,7 @@ function Room() {
 
           // console.log("CREATED MESSAGE", message);
           // const message = decrypt(encrypted, "SECRET", iv);
+
           setInbox((prev) => {
             return [...prev, message];
           });
@@ -98,22 +123,26 @@ function Room() {
       socketRef.current.disconnect();
       toast.success("Disconnected");
     };
-  }, [name, room]);
+  }, [name, room, queryClient]);
 
   useEffect(() => {
     // SCROLL EFFECT FOR MESSAGES
-    messageScrollRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
-  }, [inbox]);
+    if (messageScrollRef.current) {
+      messageScrollRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  }, [inbox, data]);
 
   useEffect(() => {
     // SCROLL EFFECT FOR NOTIFICATIONS
-    notificationScrollRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-    });
+    if (notificationScrollRef.current) {
+      notificationScrollRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
   }, [userMessages]);
 
   // ON CLICK HANDLER FOR ENTER CLICK
@@ -146,6 +175,9 @@ function Room() {
     setNewMessage("");
   }
 
+  if (isPending) return <p>Loading....</p>;
+  if (error) return <p>{error.message}</p>;
+
   return (
     <>
       <Container type="rooms">
@@ -165,9 +197,14 @@ function Room() {
         </NotificationBox>
 
         <MessageBox>
-          {inbox.map((msg, idx) => {
+          {parsedData
+            .sort((a, b) => a.date.localeCompare(b.date))
+            .map((msg, idx) => {
+              return <Message name={name} key={idx} msg={msg} />;
+            })}
+          {/* {inbox.map((msg, idx) => {
             return <Message name={name} key={idx} msg={msg} />;
-          })}
+          })} */}
           <div ref={messageScrollRef}></div>
         </MessageBox>
         <div>

@@ -3,12 +3,13 @@ import https from "https";
 import { Server } from "socket.io";
 import redisClient from "./redis.js";
 import fs from "fs";
-import { verifyJWT } from "../utils/jwtToken.js";
+import { requireSocketJwt } from "../middleware/jwtAuth.js";
 
 // Read SSL certificate files
 const PRIVATE_KEY = fs.readFileSync("key.pem", "utf8");
 const CERTIFICATE = fs.readFileSync("cert.pem", "utf8");
 
+// EXPRESS APP
 const app = express();
 
 // Create an HTTPS service using the SSL certificates
@@ -27,19 +28,7 @@ const io = new Server(server, {
 });
 
 // MIDDLEWARE CHECKS INCOMING CONNECTION FOR JWT TOKEN OR THROWS ERR
-io.use((socket, next) => {
-  try {
-    const token = socket.handshake.query.token;
-    const data = verifyJWT(token);
-    // console.log("TOKENDATA", data);
-    socket.userName = data.name;
-    socket.room = data.roomName;
-    next();
-  } catch (err) {
-    console.error("TOKEN ERR:", err.message);
-    next(new Error("Error TOKEN"));
-  }
-});
+io.use(requireSocketJwt);
 
 io.on("connection", (socket) => {
   // console.log("user connected,sockedID", socket.id);
@@ -80,12 +69,13 @@ io.on("connection", (socket) => {
       body: message.text,
       date: new Date().toLocaleTimeString(),
     };
+    // console.log("SENDER MSG", senderMessage);
 
     // PUSH MESSAGE TO REDIS LIST IN KEY rooms:<roomName>:messages
     try {
       // FIND OUT REMAINING TTL OF ROOM
       const roomTTL = await redisClient.ttl(`rooms:${socket.room}`);
-      console.log(roomTTL);
+      // console.log(roomTTL);
 
       await redisClient.LPUSH(
         `rooms:${socket.room}:messages`,

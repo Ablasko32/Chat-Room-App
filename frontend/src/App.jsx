@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./features/ui/ProtectedRoute.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ function App() {
         </AppLayout>
       </BrowserRouter>
       {/* Notifications toaster */}
+      <ReactQueryDevtools initialIsOpen={false} />
       <Toaster
         position="top-center"
         gutter={8}

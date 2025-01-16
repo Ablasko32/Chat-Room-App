@@ -1,4 +1,7 @@
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { decrypt } from "../../utils/encryption";
 
 const StyledMessage = styled.div`
   border-bottom: 0.5px solid var(--soft-border);
@@ -18,6 +21,7 @@ const StyledMessage = styled.div`
     css`
       align-self: flex-end;
       border-left: 0.5px solid var(--soft-border);
+      border-bottom-right-radius: 0px !important;
 
       & h2 {
         border-bottom: 0.5px solid var(--light-green);
@@ -28,6 +32,7 @@ const StyledMessage = styled.div`
     !props.$user &&
     css`
       border-right: 0.5px solid white;
+      border-bottom-left-radius: 0px !important;
 
       & h2 {
         border-bottom: 0.5px solid var(--primary-color);
@@ -58,10 +63,21 @@ const MessageText = styled.p`
 `;
 
 function Message({ msg, name }) {
+  const [body, setBody] = useState("...");
+  // console.log("MSG IN MSG", msg);
+
+  const { room } = useParams();
+
+  // DECRYPTION OF MSG BODY
+  decrypt(msg.body, room, msg.iv).then((data) => {
+    // console.log("DECRYPTED", data);
+    setBody(data);
+  });
+
   return (
     <StyledMessage $user={msg.sender === name ? true : false}>
       <h2>#{msg.sender}</h2>
-      <MessageText>{msg.body}</MessageText>
+      <MessageText>{body}</MessageText>
       <Date>{msg.date}</Date>
     </StyledMessage>
   );

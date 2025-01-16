@@ -91,3 +91,44 @@ export const verifyToken = async (req, res) => {
     res.status(401).json({ data: null, error: "Token not valid" });
   }
 };
+
+export const getRoomMessages = async (req, res) => {
+  try {
+    const { roomName } = req.params;
+    if (!roomName)
+      return res
+        .status(400)
+        .json({ data: null, error: "Room name must be provided!" });
+
+    const allMessages = await redisClient.lRange(
+      `rooms:${roomName}:messages`,
+      0,
+      -1
+    );
+
+    const sortedMessages = allMessages.sort((a, b) => {
+      const dateA = new Date(a.date); // Assuming date is a string like '14:31:55'
+      const dateB = new Date(b.date);
+      return dateA - dateB;
+    });
+
+    // PARSES MSGES AS JSON AND CREATES BUFFERS FOR IV AND BODY
+    const parsedMessages = sortedMessages.map((msg) => {
+      const parsedMsg = JSON.parse(msg);
+      parsedMsg.body = Buffer.from(parsedMsg.body);
+      parsedMsg.iv = Buffer.from(parsedMsg.iv);
+      // console.log("PARSED MSG", parsedMsg);
+      return parsedMsg;
+    });
+
+    return res.status(200).json({
+      data: parsedMessages,
+      error: null,
+    });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ data: null, error: "Error fetching messages" });
+  }
+};
