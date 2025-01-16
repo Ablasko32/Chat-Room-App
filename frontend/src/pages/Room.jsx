@@ -13,6 +13,7 @@ import TextField, {
 } from "../features/ui/TextField";
 import { LiaTelegram } from "react-icons/lia";
 import { decrypt, encrypt } from "../utils/encryption";
+import toast from "react-hot-toast";
 
 // INDIVIDUAL ROOM , ESTABLISHES SOCKET.io CONNECTION, AUTH VIA JWT IN LOCAL STORAGE
 // PROTECTED BY ProtectedRoute via useEffect api call
@@ -63,7 +64,7 @@ function Room() {
       socketRef.current.emit("joinedRoom", { name: name, room });
 
       socketRef.current.on("userJoined", (message) => {
-        console.log(message);
+        // console.log(message);
         setUserMessages((prev) => {
           return [...prev, message];
         });
@@ -80,10 +81,10 @@ function Room() {
 
         decrypt(msg.body, room, msg.iv).then((data) => {
           let body = data;
-          console.log(body);
+          // console.log(body);
           const message = { sender: msg.sender, body: body, date: msg.date };
 
-          console.log("CREATED MESSAGE", message);
+          // console.log("CREATED MESSAGE", message);
           // const message = decrypt(encrypted, "SECRET", iv);
           setInbox((prev) => {
             return [...prev, message];
@@ -95,7 +96,7 @@ function Room() {
 
     return () => {
       socketRef.current.disconnect();
-      console.log("Disconnected from server");
+      toast.success("Disconnected");
     };
   }, [name, room]);
 

@@ -46,7 +46,7 @@ export const createRoom = async (req, res) => {
 
 export const loginRoom = async (req, res) => {
   const { password, roomName, name } = req.body;
-  console.log(password, roomName);
+  // console.log(password, roomName);
 
   try {
     if (!roomName || !password || !name)
@@ -64,7 +64,7 @@ export const loginRoom = async (req, res) => {
       return res.status(401).json({ data: null, error: "Bad credentials" });
 
     const token = generateJWT({ roomName, name });
-    console.log(token);
+    // console.log(token);
 
     return res.status(200).json({
       data: { token: token, room: roomName, name: name },

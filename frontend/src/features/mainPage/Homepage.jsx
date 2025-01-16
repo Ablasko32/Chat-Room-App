@@ -77,7 +77,7 @@ function Homepage() {
   const { loginRoom, isLogingIn } = useLogin();
 
   function handleConnect(data) {
-    console.log(data);
+    // console.log(data);
     loginRoom({ ...data, roomName: data.room });
   }
 

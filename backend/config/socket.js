@@ -6,14 +6,15 @@ import fs from "fs";
 import { verifyJWT } from "../utils/jwtToken.js";
 
 // Read SSL certificate files
-const privateKey = fs.readFileSync("key.pem", "utf8");
-const certificate = fs.readFileSync("cert.pem", "utf8");
+const PRIVATE_KEY = fs.readFileSync("key.pem", "utf8");
+const CERTIFICATE = fs.readFileSync("cert.pem", "utf8");
 
 const app = express();
 
 // Create an HTTPS service using the SSL certificates
-const server = https.createServer({ key: privateKey, cert: certificate }, app);
+const server = https.createServer({ key: PRIVATE_KEY, cert: CERTIFICATE }, app);
 
+// IO SERVER WITH CORS
 const io = new Server(server, {
   cors: {
     origin: [
@@ -25,13 +26,12 @@ const io = new Server(server, {
   },
 });
 
-let rooms = {};
-
+// MIDDLEWARE CHECKS INCOMING CONNECTION FOR JWT TOKEN OR THROWS ERR
 io.use((socket, next) => {
   try {
     const token = socket.handshake.query.token;
     const data = verifyJWT(token);
-    console.log("TOKENDATA", data);
+    // console.log("TOKENDATA", data);
     socket.userName = data.name;
     socket.room = data.roomName;
     next();
@@ -42,65 +42,79 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("user connected,sockedID", socket.id);
+  // console.log("user connected,sockedID", socket.id);
 
   socket.on("connect_error", (error) => {
     console.error("Connection failed:", error);
   });
 
   socket.on("error", (exception) => {
-    console.log("SOCKET ERR", exception);
+    console.error("SOCKET ERR", exception);
   });
 
-  // kada user emitira join room server ga priruzi sobi s imenom
-  socket.on("joinedRoom", () => {
+  // WHEN USER EMITS joinedRoom SERVER JOINS HIM TO ROOM NAME VIA DATA FROM JWT TOKEN THATS PART OF SOCKET
+
+  socket.on("joinedRoom", async () => {
     const name = socket.userName;
     const room = socket.room;
     socket.join(room);
-    console.log(name + " joined room: " + room);
-    io.to(room).emit("userJoined", `User ${name} has joined`);
 
-    if (!rooms[room]) {
-      rooms[room] = [];
+    try {
+      // SET USER NAME ID PAIR IN REDIS HASH
+      await redisClient.hSet(`rooms:${room}:users`, name, socket.id);
+
+      // EMIT NOTIFICATION TO ROOM THAT NEW USER HAS JOINED
+      io.to(room).emit("userJoined", `User ${name} has joined`);
+    } catch (err) {
+      console.error("Error joining room:", err);
+
+      socket.disconnect(true);
     }
-    rooms[room].push({ name, socketId: socket.id });
-
-    redisClient.lPush(
-      `rooms:${room}:users`,
-      JSON.stringify({ name, socketId: socket.id })
-    );
   });
 
-  // Send messages to room
-  socket.on("newMessage", (message) => {
+  // WHEN MESSAGE IS SENT IT IS EMITED TO ROOM VIA getNewMessage
+  socket.on("newMessage", async (message) => {
     const senderMessage = {
       sender: message.name,
       iv: message.iv,
       body: message.text,
       date: new Date().toLocaleTimeString(),
     };
-    console.log("SERVER", senderMessage);
-    io.to(message.room).emit("getNewMessage", senderMessage);
-  });
 
-  // When a user disconnects
-  socket.on("disconnect", () => {
-    console.log("user disconnected, socketID:", socket.id);
+    // PUSH MESSAGE TO REDIS LIST IN KEY rooms:<roomName>:messages
+    try {
+      // FIND OUT REMAINING TTL OF ROOM
+      const roomTTL = await redisClient.ttl(`rooms:${socket.room}`);
+      console.log(roomTTL);
 
-    // Iterate through each room to find the user
-    for (const room in rooms) {
-      const index = rooms[room].findIndex(
-        (user) => user.socketId === socket.id
+      await redisClient.LPUSH(
+        `rooms:${socket.room}:messages`,
+        JSON.stringify(senderMessage)
       );
 
-      if (index !== -1) {
-        const removed = rooms[room].splice(index, 1);
-        if (removed.length !== 0) {
-          io.to(room).emit("userLeft", `User ${removed[0].name} has left room`);
-        }
-      }
-      break;
+      // SET ROOM TTL TO MESSAGES
+      await redisClient.expire(`rooms:${socket.room}:messages`, roomTTL);
+
+      // console.log("SERVER", senderMessage);
+      io.to(message.room).emit("getNewMessage", senderMessage);
+    } catch (err) {
+      console.error(err);
+      socket.disconnect(true);
     }
+  });
+
+  // ON DISCONNECT
+  socket.on("disconnect", async () => {
+    const room = socket.room;
+
+    try {
+      // REMOVE USER FROM REDIS HASH
+      await redisClient.hDel(`rooms:${room}:users`, socket.userName);
+    } catch (err) {
+      console.error("Error removing user from Redis:", err);
+    }
+
+    io.emit("userLeft", `User ${socket.userName} has left`);
   });
 });
 
