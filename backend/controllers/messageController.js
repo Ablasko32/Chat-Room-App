@@ -14,12 +14,9 @@ export const getRoomMessages = async (req, res, next) => {
       -1
     );
 
-    // PARSES MSGES AS JSON AND CREATES BUFFERS FOR IV AND BODY
+    // PARSES MSGES AS JSON
     const parsedMessages = allMessages.map((msg) => {
       const parsedMsg = JSON.parse(msg);
-      parsedMsg.body = Buffer.from(parsedMsg.body);
-      parsedMsg.iv = Buffer.from(parsedMsg.iv);
-      // console.log("PARSED MSG", parsedMsg);
       return parsedMsg;
     });
 
