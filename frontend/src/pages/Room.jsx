@@ -133,6 +133,8 @@ function Room() {
     return () => {
       socketRef.current.disconnect();
       toast.success("Disconnected");
+      queryClient.clear();
+      localStorage.removeItem("authToken");
     };
   }, [name, room, queryClient]);
 

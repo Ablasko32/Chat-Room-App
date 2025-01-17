@@ -10,7 +10,7 @@ export default function useLogin() {
     mutationFn: (data) => loginToRoom(data),
     onSuccess: (data) => {
       // console.log("SUCESS", data);
-      toast.success("Login sucesfull");
+      // toast.success("Login sucesfull");
 
       const { token, room, name } = data;
 

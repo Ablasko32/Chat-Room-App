@@ -10,7 +10,7 @@ const StyledDropdown = styled.div`
   z-index: 1000;
   /* top: 60px;
 right: 20px; */
-  transform: translateX(-100%) translateY(90%);
+  transform: translateX(-100%) translateY(65%);
   left: ${(props) => props.$position.clientX}px;
   top: ${(props) => props.$position.clientY}px;
   min-width: 8rem;
