@@ -85,6 +85,20 @@ const Date = styled.p`
   font-style: italic;
   color: #fffcfca4;
   /* #fffcfccb; */
+
+  ${(props) =>
+    props.$online === true &&
+    css`
+      &::before {
+        display: inline-block;
+        content: "";
+        height: 6px;
+        width: 6px;
+        background-color: var(--light-green);
+        border-radius: 50%;
+        margin: 0rem 0.5rem;
+      }
+    `}
 `;
 
 const MessageText = styled.p`
@@ -101,9 +115,12 @@ const StyledName = styled.h2`
   gap: 0.5rem;
 `;
 
-function Message({ msg, name }) {
+function Message({ msg, name, onlineUsers }) {
   const [body, setBody] = useState("...");
-  // console.log("MSG IN MSG", msg);
+
+  const userNames = Object.keys(onlineUsers);
+
+  console.log("ONLINE USERS IN MESSAGE", userNames);
 
   const { room } = useParams();
 
@@ -120,7 +137,9 @@ function Message({ msg, name }) {
         <span>{msg.sender}</span>
       </StyledName>
       <MessageText>{body}</MessageText>
-      <Date>{msg.date}</Date>
+      <Date $online={userNames.includes(msg.sender) ? true : false}>
+        {msg.date}
+      </Date>
     </StyledMessage>
   );
 }

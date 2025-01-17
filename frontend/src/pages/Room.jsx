@@ -196,7 +196,14 @@ function Room() {
           {parsedData
             .sort((a, b) => a.date.localeCompare(b.date))
             .map((msg, idx) => {
-              return <Message name={name} key={idx} msg={msg} />;
+              return (
+                <Message
+                  onlineUsers={onlineUsers}
+                  name={name}
+                  key={idx}
+                  msg={msg}
+                />
+              );
             })}
 
           <div ref={messageScrollRef}></div>
