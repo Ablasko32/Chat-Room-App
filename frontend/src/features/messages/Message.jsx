@@ -137,7 +137,11 @@ function Message({ msg, name, onlineUsers }) {
         <span>{msg.sender}</span>
       </StyledName>
       <MessageText>{body}</MessageText>
-      <Date $online={userNames.includes(msg.sender) ? true : false}>
+      <Date
+        $online={
+          userNames.includes(msg.sender) && msg.sender !== name ? true : false
+        }
+      >
         {msg.date}
       </Date>
     </StyledMessage>
