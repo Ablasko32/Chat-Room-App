@@ -1,5 +1,6 @@
 import redisClient from "../config/redis.js";
 import { ServerError } from "../middleware/errorHandler.js";
+import { io } from "../config/socket.js";
 
 export const getRoomMessages = async (req, res, next) => {
   try {
@@ -24,6 +25,21 @@ export const getRoomMessages = async (req, res, next) => {
       data: parsedMessages,
       error: null,
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteMessages = async (req, res, next) => {
+  try {
+    // target room
+    const { roomName } = req.params;
+
+    // delete messages from redis
+    await redisClient.del(`rooms:${roomName}:messages`);
+    // emits event that needs to be handled by refetching data so it stays in sync
+    io.to(roomName).emit("killSwitch", "Kill switch activated");
+    return res.status(200).json({ data: "Room messages deleted", error: null });
   } catch (err) {
     next(err);
   }

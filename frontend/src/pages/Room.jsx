@@ -46,7 +46,7 @@ const StyledDataContainer = styled.div`
   display: flex;
   align-items: center;
   /* justify-content: space-between; */
-  gap: 2rem;
+  gap: 4.5rem;
   @media (min-width: 1024px) {
     justify-content: space-between;
   }
@@ -94,18 +94,25 @@ function Room() {
 
       socketRef.current.emit("joinedRoom", { name: name, room });
 
-      socketRef.current.on("userJoined", (message) => {
+      // HANDLE USER JOINED / USER HAS LEFT NOTIFICATIONS
+      socketRef.current.on("notification", (message) => {
         toast.success(message, {
           duration: 1500,
         });
       });
 
-      socketRef.current.on("userLeft", (message) => {
-        toast.success(message, {
-          duration: 1500,
+      // HANDLE KILL SWITCH DELETE WHEN ONE OF USERS DELETES
+      socketRef.current.on("killSwitch", (message) => {
+        toast.error(message, {
+          duration: 5000,
+          style: {
+            fontSize: "1.8rem",
+          },
         });
+        queryClient.invalidateQueries(["messages"]);
       });
 
+      // RECIVE MESSAGES AND PUSH TO QUERY DATA OPTIMISTICALY
       socketRef.current.on("getNewMessage", (msg) => {
         queryClient.setQueryData(["messages", room], (oldData) => {
           return [...oldData, msg];

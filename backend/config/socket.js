@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
       await redisClient.hSet(`rooms:${room}:users`, name, socket.id);
 
       // EMIT NOTIFICATION TO ROOM THAT NEW USER HAS JOINED
-      io.to(room).emit("userJoined", `User ${name} has joined`);
+      io.to(room).emit("notification", `User ${name} has joined`);
     } catch (err) {
       console.error("Error joining room:", err);
 
@@ -104,7 +104,7 @@ io.on("connection", (socket) => {
       console.error("Error removing user from Redis:", err);
     }
 
-    io.emit("userLeft", `User ${socket.userName} has left`);
+    io.emit("notification", `User ${socket.userName} has left`);
   });
 });
 

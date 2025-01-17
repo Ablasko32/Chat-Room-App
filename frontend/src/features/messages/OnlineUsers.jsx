@@ -1,10 +1,10 @@
-import { PiUsersThreeLight } from "react-icons/pi";
+import { PiUsersThin } from "react-icons/pi";
 import styled from "styled-components";
 
 const StlyedOnlineUsersContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -16,7 +16,7 @@ const StlyedOnlineUsersContainer = styled.div`
   }
 `;
 
-const StyledNumber = styled.p`
+const StyledNumber = styled.div`
   font-size: 1.8rem;
   display: flex;
   align-items: center;
@@ -44,7 +44,7 @@ function OnlineUsers() {
         <p>4</p>
       </StyledNumber>
       <StyledIcon>
-        <PiUsersThreeLight />
+        <PiUsersThin />
       </StyledIcon>
     </StlyedOnlineUsersContainer>
   );

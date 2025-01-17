@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { RiAlarmWarningLine } from "react-icons/ri";
+import useDeleteAllMessages from "./useDeleteAllMessages";
+import { useParams } from "react-router-dom";
 
 const StyledKillSwitch = styled.button`
   border: 0.7px solid var(--red-error);
   background-color: transparent;
   color: white;
-  padding: 1rem 1.8rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 10px;
   /* position: absolute;
   top: 55px;
@@ -16,7 +18,8 @@ const StyledKillSwitch = styled.button`
   gap: 0.5rem;
   font-size: 1.4rem;
   transition: all 0.1s;
-
+  color: var(--red-error);
+  align-self: flex-end;
   &:hover {
     box-shadow: 0px 0px 4px 0px var(--red-error);
 
@@ -36,8 +39,17 @@ const StyledIcon = styled.span`
 `;
 
 function KillSwitch() {
+  const { room } = useParams();
+
+  const { isDeletingMessages, deleteAllMessages } = useDeleteAllMessages();
+
+  function handleKillSwitch() {
+    if (!window.confirm("Are you sure?")) return;
+    deleteAllMessages(room);
+  }
+
   return (
-    <StyledKillSwitch>
+    <StyledKillSwitch onClick={handleKillSwitch} disabled={isDeletingMessages}>
       <StyledIcon>
         <RiAlarmWarningLine />
       </StyledIcon>
