@@ -52,6 +52,10 @@ io.on("connection", (socket) => {
       // SET USER NAME ID PAIR IN REDIS HASH
       await redisClient.hSet(`rooms:${room}:users`, name, socket.id);
 
+      //  emit user list that is online curently
+      const users = await redisClient.hGetAll(`rooms:${room}:users`);
+      io.to(room).emit("onlineUserList", users);
+
       // EMIT NOTIFICATION TO ROOM THAT NEW USER HAS JOINED
       io.to(room).emit("notification", `User ${name} has joined`);
     } catch (err) {
@@ -100,11 +104,13 @@ io.on("connection", (socket) => {
     try {
       // REMOVE USER FROM REDIS HASH
       await redisClient.hDel(`rooms:${room}:users`, socket.userName);
+      //  emit user list that is online curently
+      const users = await redisClient.hGetAll(`rooms:${room}:users`);
+      io.to(room).emit("onlineUserList", users);
+      io.emit("notification", `User ${socket.userName} has left`);
     } catch (err) {
       console.error("Error removing user from Redis:", err);
     }
-
-    io.emit("notification", `User ${socket.userName} has left`);
   });
 });
 

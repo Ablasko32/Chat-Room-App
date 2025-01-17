@@ -9,7 +9,6 @@ export default function useDeleteAllMessages() {
     useMutation({
       mutationFn: (room) => deleteMessages(room),
       onSuccess: () => {
-        toast.success("Messages deleted");
         queryClient.invalidateQueries(["messages"]);
       },
       onError: (err) => {

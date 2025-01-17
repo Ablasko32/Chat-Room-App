@@ -58,6 +58,9 @@ function Room() {
   const sendRef = useRef();
   const navigate = useNavigate();
 
+  // online users
+  const [onlineUsers, setOnlineUsers] = useState({});
+
   const [newMessage, setNewMessage] = useState("");
 
   const socketRef = useRef();
@@ -99,6 +102,12 @@ function Room() {
         toast.success(message, {
           duration: 1500,
         });
+      });
+
+      // HANDLE ONLINE USERS LIST
+      socketRef.current.on("onlineUserList", (onlineUsers) => {
+        // set state that is passed to onlineusers component
+        setOnlineUsers(onlineUsers);
       });
 
       // HANDLE KILL SWITCH DELETE WHEN ONE OF USERS DELETES
@@ -176,7 +185,7 @@ function Room() {
         <BackButton onClick={() => navigate(-1, { replace: true })}>
           <CiLogout />
         </BackButton>
-        <OnlineUsers />
+        <OnlineUsers onlineUsers={onlineUsers} />
 
         <StyledDataContainer>
           <RoomData name={name} room={room} />
