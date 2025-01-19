@@ -32,7 +32,7 @@ function App() {
         </AppLayout>
       </BrowserRouter>
       {/* Notifications toaster */}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <Toaster
         position="top-center"
         gutter={8}

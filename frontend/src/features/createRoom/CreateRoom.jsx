@@ -9,10 +9,26 @@ import CardContainer from "../ui/CardContainer";
 import { InputContainer } from "../ui/Input";
 import StyledForm from "../ui/StyledForm";
 import { useState } from "react";
+import Lock1 from "../../assets/lock1.svg";
 
 // DISPLAYS CREATE ROOM FORM MODAL BY CREATING PORTAL TO DOCUMENT BODY
 // USES useCreateRoom custom hook
 // REQUIRES onClose function to close modal
+
+const StyledSvg = styled.img`
+  position: absolute;
+  top: -40px;
+  right: -20px;
+  height: 100px;
+  /* transform: rotate(15deg); */
+  background-color: var(--background-color);
+  border: none;
+
+  @media (min-width: 768px) {
+    height: 200px;
+    top: -100px;
+  }
+`;
 
 const StyledModal = styled.div`
   position: fixed;
@@ -84,6 +100,7 @@ function CreateRoom({ onClose }) {
   return createPortal(
     <StyledModal $closing={isClosing ? true : false}>
       <CardContainer>
+        <StyledSvg alt="icon of a lock inside shield" src={Lock1}></StyledSvg>
         <Header>CREATE</Header>
         <p>Privacy.</p>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
