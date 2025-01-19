@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { createPortal } from "react-dom";
+import { useEffect, useRef } from "react";
 
 const StyledDropdown = styled.div`
   background-color: var(--bg-lifted);
@@ -10,10 +11,10 @@ const StyledDropdown = styled.div`
   z-index: 1000;
   /* top: 60px;
 right: 20px; */
-  transform: translateX(-100%) translateY(65%);
+  /* transform: translateX(-100%) translateY(65%); */
   left: ${(props) => props.$position.clientX}px;
   top: ${(props) => props.$position.clientY}px;
-  min-width: 8rem;
+  width: 12rem;
 `;
 
 const StyledList = styled.ul`
@@ -28,6 +29,7 @@ const StyledListItem = styled.li`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  word-break: break-all;
 `;
 
 const StyledOnline = styled.p`
@@ -39,11 +41,31 @@ const StyledOnline = styled.p`
   filter: blur(0.1px);
 `;
 
-function OnlineUsersDropdown({ onlineUsers, position }) {
+function OnlineUsersDropdown({ onlineUsers, position, onClose }) {
+  const dropdownRef = useRef();
+
   const userNames = Object.keys(onlineUsers);
 
+  // HANDLE CLOSE WHEN CLICKED OUTSIDE MODAL
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (!dropdownRef.current || dropdownRef.current.contains(e.target))
+        return;
+      onClose();
+    }
+
+    const timer = setTimeout(() => {
+      document.addEventListener("click", handleOutsideClick);
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [onClose]);
+
   return createPortal(
-    <StyledDropdown $position={position}>
+    <StyledDropdown ref={dropdownRef} $position={position}>
       <StyledList>
         {userNames.map((name, idx) => {
           return (
@@ -53,11 +75,6 @@ function OnlineUsersDropdown({ onlineUsers, position }) {
             </StyledListItem>
           );
         })}
-        {/* <li>aaa</li>
-        <li>aaa</li>
-        <li>aaa</li>
-        <li>aaa</li>
-        <li>aaazzzaaaaaaaaaaa</li> */}
       </StyledList>
     </StyledDropdown>,
     document.body

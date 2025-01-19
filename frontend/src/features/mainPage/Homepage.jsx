@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CreateRoom from "../createRoom/CreateRoom";
 import useLogin from "./useLogin";
-import Lock from "../../assets/lock.svg";
+import Lock1 from "../../assets/lock1.svg";
 import { StyledLabel, StyledInput, FormError } from "../ui/Input";
 import { StyledButton } from "../ui/Button";
 import { useForm } from "react-hook-form";
@@ -16,11 +16,12 @@ import { InputContainer } from "../ui/Input";
 
 const StyledSvg = styled.img`
   position: absolute;
-  top: -60px;
+  top: -40px;
   right: -20px;
-  height: 120px;
-  transform: rotate(15deg);
-  filter: drop-shadow(0px 0px 1.2px #4a90e2);
+  height: 100px;
+  /* transform: rotate(15deg); */
+  background-color: var(--background-color);
+  border: none;
 
   @media (min-width: 768px) {
     height: 200px;
@@ -142,7 +143,7 @@ function Homepage() {
           <StyledButton onClick={createRoom}>CREATE ROOM</StyledButton>
         </ButtonContainer>
 
-        <StyledSvg src={Lock}></StyledSvg>
+        <StyledSvg alt="icon of a lock inside shield" src={Lock1}></StyledSvg>
       </StyledForm>
       {isCreateRoomOpen && <CreateRoom onClose={setIsCreateRoomOpen} />}
     </CardContainer>

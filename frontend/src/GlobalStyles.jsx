@@ -39,6 +39,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     
   }
-`;
 
-// #3b6b9b;
+
+
+`;

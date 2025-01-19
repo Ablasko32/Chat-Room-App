@@ -55,12 +55,16 @@ function OnlineUsers({ onlineUsers }) {
   const handleOpenDropdown = (e) => {
     const containerRect = containerRef.current.getBoundingClientRect();
     setPosition({
-      clientX: containerRect.left + containerRect.width,
-      clientY: containerRect.top,
+      clientX: containerRect.left - containerRect.width + 8,
+      clientY: containerRect.top + containerRect.height - 8,
     });
 
     setDropDownOpen((prev) => !prev);
   };
+
+  function hadleCloseDropdown() {
+    setDropDownOpen(false);
+  }
 
   return (
     <StlyedOnlineUsersContainer ref={containerRef} onClick={handleOpenDropdown}>
@@ -72,7 +76,11 @@ function OnlineUsers({ onlineUsers }) {
         <PiUsersThin />
       </StyledIcon>
       {isDropdownOpen && (
-        <OnlineUsersDropdown position={position} onlineUsers={onlineUsers} />
+        <OnlineUsersDropdown
+          onClose={hadleCloseDropdown}
+          position={position}
+          onlineUsers={onlineUsers}
+        />
       )}
     </StlyedOnlineUsersContainer>
   );
