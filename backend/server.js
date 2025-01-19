@@ -18,6 +18,6 @@ app.use(messageRouter);
 // CUSTOM ERROR HANDLER MIDDLEWARE
 app.use(errorHandler);
 
-server.listen(DEFAULT_PORT, "0.0.0.0", () => {
+server.listen(DEFAULT_PORT, () => {
   console.log("RUNNING ON PORT--->" + DEFAULT_PORT);
 });

@@ -11,7 +11,6 @@ A feature-rich real-time chat room application built from scratch, including bot
   <img src="https://img.shields.io/badge/Express-4.21.2-green" alt="Express">
   <img src="https://img.shields.io/badge/Socket.io-4.8.1-green" alt="Socket.io">
   <img src="https://img.shields.io/badge/Redis-4.7.0-green" alt="Redis">
-  <img src="https://img.shields.io/badge/Docker-blue" alt="Docker">
 </p>
 
 ---
@@ -23,7 +22,6 @@ A feature-rich real-time chat room application built from scratch, including bot
 - **Data Store**: Redis
 - **Remote State Management**: TanStack Query + Axios
 - **Styling**: Styled-Components
-- **Containerization**: Docker
 
 ---
 
@@ -40,7 +38,7 @@ A feature-rich real-time chat room application built from scratch, including bot
 
 3. **Encrypted Communication**
 
-   - Basic message encryption using `crypto.subtle` and AES-CBC for added security.
+   - Basic message encryption using `crypto.subtle` and `AES-CBC` for added security.
 
 4. **Self-Destructing Rooms**
 
@@ -54,9 +52,6 @@ A feature-rich real-time chat room application built from scratch, including bot
 
    - See real-time indications of online users and a list of participants in each room.
 
-7. **Dockerized Environment**
-   - Fully containerized application using Docker Compose for effortless deployment.
-
 ---
 
 ## **Screenshots**
@@ -66,6 +61,59 @@ A feature-rich real-time chat room application built from scratch, including bot
   <img align="center" height="500" src="./github_images/create.png" alt="Create room screen"/>
   <img align="center" height="500" src="./github_images/chat.png" alt="Chat screen"/>
 </p>
+
+---
+
+## **How to use**
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone <repoUrl>
+   ```
+
+2. **Configure Redis**
+
+   The application uses a Redis instance managed by Docker. Ensure you have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.Then run:
+
+   ```bash
+   docker compose up
+   ```
+
+   > docker-desktop required on windows
+
+3. **Generate SSL certificates**
+
+   Generate SSL certificates for both the backend and frontend using tools like `openssl` or `makecert`. Save them with the following filenames:
+
+   - `cert.pem` (SSL certificate)
+   - `key.pem` (Private key)
+
+   Place these files in the root directory of both the backend and frontend folders..
+
+   > Encryption requires HTTPS!
+   >
+   > > If using openssl, ensure to manually trust both the backend and frontend.
+
+4. **Configure .env**
+
+   To configure your environment, create a .env file in the root directory of both backend and frontend and set the required variables like the `.env.example` files.
+
+5. **Start backend**
+
+   Navigate to the backend directory and start the server:
+
+   ```bash
+   node server.js
+   ```
+
+6. **Start frontend server**
+
+   Navigate to the frontend directory and start the development server:
+
+   ```bash
+   npm run dev
+   ```
 
 ---
 
@@ -80,7 +128,3 @@ This project is licensed under the [MIT License](./LICENSE).
 If you’d like to contribute to the development of SafeRoom, feel free to fork the repository and submit pull requests. We welcome suggestions and improvements!
 
 ---
-
-## **Project Status**
-
-> **Note**: This project is currently under active development. Stay tuned for updates and exciting new features!
