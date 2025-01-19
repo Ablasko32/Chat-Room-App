@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
+
+  
   
   :root{
     --primary-color:#4a90e2;
@@ -29,6 +31,7 @@ export const GlobalStyle = createGlobalStyle`
   body{
     color:#EDEDED;
     background-color: var(--background-color);
+    font-family: "Inter";
     
   }
 

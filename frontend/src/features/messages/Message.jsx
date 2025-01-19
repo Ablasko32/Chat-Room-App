@@ -9,6 +9,7 @@ const StyledMessage = styled.div`
   position: relative;
   width: 80%;
   padding: 8px;
+  padding-bottom: 1.4rem;
   display: flex;
   flex-direction: column;
   max-width: 40rem;
@@ -79,6 +80,7 @@ const StyledMessage = styled.div`
 `;
 
 const Date = styled.p`
+  position: absolute;
   align-self: flex-end;
   margin-top: auto;
   padding: 2px;
@@ -95,6 +97,7 @@ const Date = styled.p`
         height: 6px;
         width: 6px;
         background-color: var(--light-green);
+        filter: blur(0.5px);
         border-radius: 50%;
         margin: 0rem 0.5rem;
       }
@@ -120,7 +123,7 @@ function Message({ msg, name, onlineUsers }) {
 
   const userNames = Object.keys(onlineUsers);
 
-  console.log("ONLINE USERS IN MESSAGE", userNames);
+  // console.log("ONLINE USERS IN MESSAGE", userNames);
 
   const { room } = useParams();
 

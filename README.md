@@ -55,9 +55,9 @@ A real-time chat room application built from scratch, including both backend and
 ## **Screenshots**
 
 <p align="center">
-  <img align="center" height="500" src="./github_images/main.png" alt="Main screen"/>
-  <img align="center" height="500" src="./github_images/create.png" alt="Create room screen"/>
-  <img align="center" height="500" src="./github_images/chat.png" alt="Chat screen"/>
+  <img align="center" width="650" src="./github_images/main.png" alt="Main screen"/>
+  <img align="center" width="650" src="./github_images/create.png" alt="Create room screen"/>
+  <img align="center" width="650" src="./github_images/chat.png" alt="Chat screen"/>
 </p>
 
 ---
