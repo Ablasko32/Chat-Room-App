@@ -1,8 +1,6 @@
-<div style="height: 8px; background-color: #4a90e2;"></div>
-
 # <img width="60" src ="./frontend/src/assets/lock1.svg" /> **SafeRoom - Real-Time Chat Room App**
 
-A feature-rich real-time chat room application built from scratch, including both backend and frontend components.
+A real-time chat room application built from scratch, including both backend and frontend components.
 
 <p align="center">
 
@@ -95,9 +93,15 @@ A feature-rich real-time chat room application built from scratch, including bot
    >
    > > If using openssl, ensure to manually trust both the backend and frontend.
 
-4. **Configure .env**
+4. **Configure .env and install dependencies:**
 
-   To configure your environment, create a .env file in the root directory of both backend and frontend and set the required variables like the `.env.example` files.
+   - To configure your environment, create a .env file in the root directory of both backend and frontend and set the required variables like the `.env.example` files.
+
+   - Install Dependencies via:
+
+     ```bash
+     npm i
+     ```
 
 5. **Start backend**
 
