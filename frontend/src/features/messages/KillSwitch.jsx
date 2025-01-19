@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { RiAlarmWarningLine } from "react-icons/ri";
 import useDeleteAllMessages from "./useDeleteAllMessages";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
+import ConfirmModal from "../ui/ConfirmModal";
 
 const StyledKillSwitch = styled.button`
   border: 0.7px solid var(--red-error);
@@ -43,19 +45,35 @@ function KillSwitch() {
 
   const { isDeletingMessages, deleteAllMessages } = useDeleteAllMessages();
 
+  const [isConfirmOpen, setConfirmOpen] = useState(false);
+
   function handleKillSwitch() {
-    if (!window.confirm("Are you sure?")) return;
+    // if (!window.confirm("Are you sure?")) return;
     deleteAllMessages(room);
   }
 
-  return (
-    <StyledKillSwitch onClick={handleKillSwitch} disabled={isDeletingMessages}>
-      <StyledIcon>
-        <RiAlarmWarningLine />
-      </StyledIcon>
+  function openModal() {
+    setConfirmOpen(true);
+  }
 
-      <p>KillSwitch</p>
-    </StyledKillSwitch>
+  function closeModal() {
+    setConfirmOpen(false);
+  }
+
+  return (
+    <>
+      {" "}
+      <StyledKillSwitch onClick={openModal} disabled={isDeletingMessages}>
+        <StyledIcon>
+          <RiAlarmWarningLine />
+        </StyledIcon>
+
+        <p>KillSwitch</p>
+      </StyledKillSwitch>
+      {isConfirmOpen && (
+        <ConfirmModal onConfirm={handleKillSwitch} closeModal={closeModal} />
+      )}
+    </>
   );
 }
 

@@ -23,6 +23,7 @@ const StyledNumber = styled.p`
   color: var(--primary-color);
   font-weight: 700;
   opacity: 10%;
+  font-family: "Roboto";
 
   @media (min-width: 768px) {
     font-size: 32rem;
