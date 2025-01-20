@@ -1,0 +1,12 @@
+{
+  "source": {
+    "include": ["routes"],
+    "exclude": ["node_modules/**"]
+  },
+  "templates": {
+    "default": "node_modules/docdash"
+  },
+  "opts": {
+    "destination": "./docs"
+  }
+}

@@ -21,6 +21,8 @@ export const getRoomMessages = async (req, res, next) => {
       return parsedMsg;
     });
 
+    console.log(parsedMessages);
+
     return res.status(200).json({
       data: parsedMessages,
       error: null,

@@ -31,7 +31,7 @@ export const createRoom = async (req, res, next) => {
     await redisClient.HSET(`rooms:${name}`, ["password", hashedPassword]);
     await redisClient.EXPIRE(`rooms:${name}`, expiration);
 
-    return res.status(200).json({ data: name, error: null });
+    return res.status(201).json({ data: name, error: null });
   } catch (err) {
     next(err);
   }
