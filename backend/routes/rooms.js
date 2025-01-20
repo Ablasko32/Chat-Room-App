@@ -12,6 +12,8 @@ const roomsRouter = Router();
  * /create-room:
  *   post:
  *     summary: Create a new room
+ *     tags:
+ *      - Rooms
  *     requestBody:
  *       required: true
  *       content:
@@ -25,6 +27,7 @@ const roomsRouter = Router();
  *                 type: string
  *               expiration:
  *                 type: string
+ *                 default: 3600
  *     responses:
  *       201:
  *         description: Room created
@@ -40,6 +43,7 @@ const roomsRouter = Router();
  *                       type: string
  *                 error:
  *                   type: null
+ *                   default: null
  */
 roomsRouter.post("/create-room", createRoom);
 
@@ -48,6 +52,8 @@ roomsRouter.post("/create-room", createRoom);
  * /room-login:
  *   post:
  *     summary: Login to a room
+ *     tags:
+ *      - Rooms
  *     requestBody:
  *       required: true
  *       content:
@@ -80,6 +86,7 @@ roomsRouter.post("/create-room", createRoom);
  *                       type: string
  *                 error:
  *                   type: null
+ *                   default: null
  */
 roomsRouter.post("/room-login", loginRoom);
 
@@ -88,6 +95,8 @@ roomsRouter.post("/room-login", loginRoom);
  * /verify-jwt:
  *   post:
  *     summary: Verify JWT token
+ *     tags:
+ *      - Rooms
  *     requestBody:
  *       required: true
  *       content:
@@ -99,6 +108,11 @@ roomsRouter.post("/room-login", loginRoom);
  *                 type: string
  *               paramData:
  *                 type: object
+ *                 properties:
+ *                   room:
+ *                    type: string
+ *                   name:
+ *                    type: string
  *     responses:
  *       200:
  *         description: Successful verification
@@ -116,6 +130,7 @@ roomsRouter.post("/room-login", loginRoom);
  *                       type: string
  *                 error:
  *                   type: string
+ *                   default: null
  *
  */
 

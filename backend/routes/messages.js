@@ -12,6 +12,8 @@ const messageRouter = Router();
  * /get-messages/:roomName:
  *   get:
  *     summary: Get all messages for a room
+ *     tags:
+ *      - Messages
  *     parameters:
  *       - in: path
  *         name: roomName
@@ -34,9 +36,21 @@ const messageRouter = Router();
  *               type: object
  *               properties:
  *                 data:
- *                   type: Array
+ *                   type: array
+ *                   items:
+ *                    type: object
+ *                    properties:
+ *                     sender:
+ *                        type: string
+ *                     iv:
+ *                        type: string
+ *                     body:
+ *                        type: string
+ *                     date:
+ *                        type: string
  *                 error:
  *                   type: null
+ *                   default: null
  */
 messageRouter.get("/get-messages/:roomName", requireJwtAuth, getRoomMessages);
 
@@ -45,6 +59,8 @@ messageRouter.get("/get-messages/:roomName", requireJwtAuth, getRoomMessages);
  * /delete-messages/:roomName:
  *   delete:
  *     summary: Delete all messages for a room
+ *     tags:
+ *      - Messages
  *     parameters:
  *       - in: path
  *         name: roomName
@@ -70,6 +86,7 @@ messageRouter.get("/get-messages/:roomName", requireJwtAuth, getRoomMessages);
  *                   type: string
  *                 error:
  *                   type: null
+ *                   default: null
  */
 messageRouter.delete(
   "/delete-messages/:roomName",

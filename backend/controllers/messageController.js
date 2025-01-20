@@ -21,8 +21,6 @@ export const getRoomMessages = async (req, res, next) => {
       return parsedMsg;
     });
 
-    console.log(parsedMessages);
-
     return res.status(200).json({
       data: parsedMessages,
       error: null,
@@ -36,6 +34,8 @@ export const deleteMessages = async (req, res, next) => {
   try {
     // target room
     const { roomName } = req.params;
+
+    if (!roomName) throw ServerError("roomName required!", 400);
 
     // delete messages from redis
     await redisClient.del(`rooms:${roomName}:messages`);
