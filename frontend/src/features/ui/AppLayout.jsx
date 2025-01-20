@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { GlobalStyle } from "../../GlobalStyles";
-import Footer from "./Footer";
+import styled from 'styled-components';
+import { GlobalStyle } from '../../GlobalStyles';
+import Footer from './Footer';
 
 const Container = styled.div`
   display: flex;

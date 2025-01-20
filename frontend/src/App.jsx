@@ -1,14 +1,13 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainPage from "./pages/mainPage";
-import Room from "./pages/Room";
-import AppLayout from "./features/ui/AppLayout";
-import "./utils/encryption.js";
-import "./services/roomsApi.js";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "react-hot-toast";
-import ProtectedRoute from "./features/ui/ProtectedRoute.jsx";
-import NotFound from "./pages/NotFound.jsx";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AppLayout from './features/ui/AppLayout';
+import ProtectedRoute from './features/ui/ProtectedRoute.jsx';
+import MainPage from './pages/mainPage';
+import NotFound from './pages/NotFound.jsx';
+import Room from './pages/Room';
+import './services/roomsApi.js';
+import './utils/encryption.js';
 
 const queryClient = new QueryClient();
 
@@ -39,23 +38,23 @@ function App() {
         toastOptions={{
           duration: 3000,
           style: {
-            background: "var(--bg-lifted)",
-            color: "var(--primary-color)",
-            fontSize: "1.4rem",
+            background: 'var(--bg-lifted)',
+            color: 'var(--primary-color)',
+            fontSize: '1.4rem',
           },
           success: {
             iconTheme: {
-              primary: "var(--primary-color)",
-              secondary: "var(--background-color)",
+              primary: 'var(--primary-color)',
+              secondary: 'var(--background-color)',
             },
           },
           error: {
             iconTheme: {
-              primary: "var(--red-error)",
-              secondary: "var(--background-color)",
+              primary: 'var(--red-error)',
+              secondary: 'var(--background-color)',
             },
             style: {
-              color: "var(--red-error)",
+              color: 'var(--red-error)',
             },
           },
         }}

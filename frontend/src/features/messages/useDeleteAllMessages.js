@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteMessages } from "../../services/messagesApi";
-import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { deleteMessages } from '../../services/messagesApi';
 
 export default function useDeleteAllMessages() {
   const queryClient = useQueryClient();
@@ -9,7 +9,7 @@ export default function useDeleteAllMessages() {
     useMutation({
       mutationFn: (room) => deleteMessages(room),
       onSuccess: () => {
-        queryClient.invalidateQueries(["messages"]);
+        queryClient.invalidateQueries(['messages']);
       },
       onError: (err) => {
         console.error(err);

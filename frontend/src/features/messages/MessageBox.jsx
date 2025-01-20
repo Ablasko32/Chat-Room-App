@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const MessageBox = styled.div`
   background-color: var(--bg-lifted);

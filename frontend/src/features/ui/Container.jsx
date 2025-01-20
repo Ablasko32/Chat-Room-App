@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const Container = styled.div`
   max-width: 100rem;
 
   ${(props) =>
-    props.type === "rooms" &&
+    props.type === 'rooms' &&
     css`
       height: 60rem;
       width: 95% !important;

@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
-import { PiUsersThin } from "react-icons/pi";
-import styled from "styled-components";
-import OnlineUsersDropdown from "./OnlineUsersDropdown";
+import { useRef, useState } from 'react';
+import { PiUsersThin } from 'react-icons/pi';
+import styled from 'styled-components';
+import OnlineUsersDropdown from './OnlineUsersDropdown';
 
 const StlyedOnlineUsersContainer = styled.div`
   display: flex;

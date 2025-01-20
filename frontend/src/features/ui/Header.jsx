@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Header = styled.h1`
   font-size: 2.4rem;
   text-transform: uppercase;
   text-shadow: 1px 1px 1px var(--secondary-color);
   text-align: center;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   letter-spacing: 0.2rem;
 
   @media (min-width: 768px) {

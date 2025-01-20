@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { StyledButton } from "../ui/Button";
-import { RiAlertLine } from "react-icons/ri";
+import { RiAlertLine } from 'react-icons/ri';
+import styled from 'styled-components';
+import { StyledButton } from '../ui/Button';
 
 const StyledConfirm = styled.div`
   background-color: red;
@@ -24,7 +24,7 @@ const StyledMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   & span {
     color: var(--red-error);
   }
@@ -48,7 +48,7 @@ function ConfirmModal({ closeModal, onConfirm }) {
   return (
     <StyledConfirm className="confirm-modal">
       <StyledMessage>
-        {" "}
+        {' '}
         <RiAlertLine size={20} color="var(--red-error)" />
         <span>Clear all messages?</span>
       </StyledMessage>

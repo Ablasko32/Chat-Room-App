@@ -1,4 +1,4 @@
-import Homepage from "../features/mainPage/Homepage";
+import Homepage from '../features/mainPage/Homepage';
 
 function MainPage() {
   return <Homepage />;

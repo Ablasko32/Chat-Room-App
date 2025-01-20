@@ -1,27 +1,26 @@
-import { useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { io } from "socket.io-client";
-import { useState } from "react";
-import { Container } from "../features/ui/Container";
-import { MessageBox } from "../features/messages/MessageBox";
-import Message from "../features/messages/Message";
-import styled from "styled-components";
+import { useQueryClient } from '@tanstack/react-query';
+import { Buffer } from 'buffer';
+import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
+import { CiLogout } from 'react-icons/ci';
+import { LiaTelegram } from 'react-icons/lia';
+import { useNavigate, useParams } from 'react-router-dom';
+import { io } from 'socket.io-client';
+import styled from 'styled-components';
+import RoomData from '../features/createRoom/RoomData';
+import KillSwitch from '../features/messages/KillSwitch';
+import Message from '../features/messages/Message';
+import { MessageBox } from '../features/messages/MessageBox';
+import OnlineUsers from '../features/messages/OnlineUsers';
+import useGetAllMessages from '../features/messages/useGetAllMessages';
+import { Container } from '../features/ui/Container';
+import DefaultError from '../features/ui/DefaultError';
+import Spinner from '../features/ui/Spinner';
 import TextField, {
   MessageForm,
   SendMessageButton,
-} from "../features/ui/TextField";
-import { LiaTelegram } from "react-icons/lia";
-import { encrypt } from "../utils/encryption";
-import toast from "react-hot-toast";
-import useGetAllMessages from "../features/messages/useGetAllMessages";
-import { Buffer } from "buffer";
-import { useQueryClient } from "@tanstack/react-query";
-import Spinner from "../features/ui/Spinner";
-import DefaultError from "../features/ui/DefaultError";
-import RoomData from "../features/createRoom/RoomData";
-import { CiLogout } from "react-icons/ci";
-import KillSwitch from "../features/messages/KillSwitch";
-import OnlineUsers from "../features/messages/OnlineUsers";
+} from '../features/ui/TextField';
+import { encrypt } from '../utils/encryption';
 
 // INDIVIDUAL ROOM , ESTABLISHES SOCKET.io CONNECTION, AUTH VIA JWT IN LOCAL STORAGE
 // PROTECTED BY ProtectedRoute via useEffect api call
@@ -61,7 +60,7 @@ function Room() {
   // online users
   const [onlineUsers, setOnlineUsers] = useState({});
 
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState('');
 
   const socketRef = useRef();
 
@@ -82,48 +81,48 @@ function Room() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem('authToken');
 
     async function handleSockets() {
-      socketRef.current = io("https://192.168.0.17:3000", {
+      socketRef.current = io('https://192.168.0.17:3000', {
         query: { token },
       });
-      socketRef.current.on("connect", () => {
+      socketRef.current.on('connect', () => {
         // console.log(
         //   "Connected to the server. Socket ID:",
         //   socketRef.current.id
         // );
       });
 
-      socketRef.current.emit("joinedRoom", { name: name, room });
+      socketRef.current.emit('joinedRoom', { name: name, room });
 
       // HANDLE USER JOINED / USER HAS LEFT NOTIFICATIONS
-      socketRef.current.on("notification", (message) => {
+      socketRef.current.on('notification', (message) => {
         toast.success(message, {
           duration: 1500,
         });
       });
 
       // HANDLE ONLINE USERS LIST
-      socketRef.current.on("onlineUserList", (onlineUsers) => {
+      socketRef.current.on('onlineUserList', (onlineUsers) => {
         // set state that is passed to onlineusers component
         setOnlineUsers(onlineUsers);
       });
 
       // HANDLE KILL SWITCH DELETE WHEN ONE OF USERS DELETES
-      socketRef.current.on("killSwitch", (message) => {
+      socketRef.current.on('killSwitch', (message) => {
         toast.error(message, {
           duration: 5000,
           style: {
-            fontSize: "1.8rem",
+            fontSize: '1.8rem',
           },
         });
-        queryClient.invalidateQueries(["messages"]);
+        queryClient.invalidateQueries(['messages']);
       });
 
       // RECIVE MESSAGES AND PUSH TO QUERY DATA OPTIMISTICALY
-      socketRef.current.on("getNewMessage", (msg) => {
-        queryClient.setQueryData(["messages", room], (oldData) => {
+      socketRef.current.on('getNewMessage', (msg) => {
+        queryClient.setQueryData(['messages', room], (oldData) => {
           return [...oldData, msg];
         });
       });
@@ -132,9 +131,9 @@ function Room() {
 
     return () => {
       socketRef.current.disconnect();
-      toast.success("Disconnected");
+      toast.success('Disconnected');
       queryClient.clear();
-      localStorage.removeItem("authToken");
+      localStorage.removeItem('authToken');
     };
   }, [name, room, queryClient]);
 
@@ -142,8 +141,8 @@ function Room() {
     // SCROLL EFFECT FOR MESSAGES
     if (messageScrollRef.current) {
       messageScrollRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
+        behavior: 'smooth',
+        block: 'end',
       });
     }
   }, [data]);
@@ -152,15 +151,15 @@ function Room() {
   useEffect(() => {
     const handleEnter = (e) => {
       // console.log(e);
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         e.preventDefault();
         sendRef.current.click();
       }
     };
 
-    document.addEventListener("keydown", handleEnter);
+    document.addEventListener('keydown', handleEnter);
 
-    return () => document.removeEventListener("keydown", handleEnter);
+    return () => document.removeEventListener('keydown', handleEnter);
   }, []);
 
   // FUNCTION TO EMIT NEW MESSAGE
@@ -174,8 +173,8 @@ function Room() {
       iv,
       text: encrypted,
     };
-    socketRef.current.emit("newMessage", message);
-    setNewMessage("");
+    socketRef.current.emit('newMessage', message);
+    setNewMessage('');
   }
 
   if (isPending) return <Spinner />;

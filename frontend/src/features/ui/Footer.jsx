@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Typewriter } from "react-simple-typewriter";
+import { Typewriter } from 'react-simple-typewriter';
+import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
   text-align: center;
@@ -16,13 +16,13 @@ const StyledTypewriter = styled.span`
 function Footer() {
   return (
     <StyledFooter>
-      We value your{" "}
+      We value your{' '}
       <StyledTypewriter>
         <Typewriter
           typeSpeed={300}
           cursor={true}
           loop={0}
-          words={["Privacy", "Security", "Anonymity"]}
+          words={['Privacy', 'Security', 'Anonymity']}
         />
       </StyledTypewriter>
     </StyledFooter>

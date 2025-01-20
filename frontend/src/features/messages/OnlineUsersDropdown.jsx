@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { createPortal } from "react-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import styled from 'styled-components';
 
 const StyledDropdown = styled.div`
   background-color: var(--bg-lifted);
@@ -55,12 +55,12 @@ function OnlineUsersDropdown({ onlineUsers, position, onClose }) {
     }
 
     const timer = setTimeout(() => {
-      document.addEventListener("click", handleOutsideClick);
+      document.addEventListener('click', handleOutsideClick);
     }, 100);
 
     return () => {
       clearTimeout(timer);
-      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener('click', handleOutsideClick);
     };
   }, [onClose]);
 
@@ -77,7 +77,7 @@ function OnlineUsersDropdown({ onlineUsers, position, onClose }) {
         })}
       </StyledList>
     </StyledDropdown>,
-    document.body
+    document.body,
   );
 }
 

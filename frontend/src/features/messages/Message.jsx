@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { decrypt } from "../../utils/encryption";
-import { PiUserLight } from "react-icons/pi";
+import { useState } from 'react';
+import { PiUserLight } from 'react-icons/pi';
+import { useParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { decrypt } from '../../utils/encryption';
 
 const StyledMessage = styled.div`
   border-radius: 14px;
@@ -34,7 +34,7 @@ const StyledMessage = styled.div`
 
       &::after {
         rotate: -8deg;
-        content: "";
+        content: '';
         height: 10px;
         width: 8px;
         background-color: inherit;
@@ -57,7 +57,7 @@ const StyledMessage = styled.div`
 
       &::after {
         rotate: 8deg;
-        content: "";
+        content: '';
         height: 10px;
         width: 8px;
         background-color: inherit;
@@ -93,7 +93,7 @@ const Date = styled.p`
     css`
       &::before {
         display: inline-block;
-        content: "";
+        content: '';
         height: 6px;
         width: 6px;
         background-color: var(--light-green);
@@ -119,7 +119,7 @@ const StyledName = styled.h2`
 `;
 
 function Message({ msg, name, onlineUsers }) {
-  const [body, setBody] = useState("...");
+  const [body, setBody] = useState('...');
 
   const userNames = Object.keys(onlineUsers);
 

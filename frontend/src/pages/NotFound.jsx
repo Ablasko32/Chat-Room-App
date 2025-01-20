@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { StyledButton } from "../features/ui/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { StyledButton } from '../features/ui/Button';
 
 // DISPLAYS DEFAULT NOT FOUND PAGE WITH BUTTON TO NAVIGATE BACK TO '/'
 
@@ -23,7 +23,7 @@ const StyledNumber = styled.p`
   color: var(--primary-color);
   font-weight: 700;
   opacity: 10%;
-  font-family: "Roboto";
+  font-family: 'Roboto';
 
   @media (min-width: 768px) {
     font-size: 32rem;
@@ -39,7 +39,7 @@ function NotFound() {
       <StyledNumber>404</StyledNumber>
       <h2>Whoops!</h2>
       <p>The page you are looking for could not be found!</p>
-      <StyledButton onClick={() => navigate("/")} $primary>
+      <StyledButton onClick={() => navigate('/')} $primary>
         Start chatting?
       </StyledButton>
     </Container>

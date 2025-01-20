@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledTextArea = styled.textarea`
   background-color: var(--bg-lifted) !important;
@@ -42,9 +42,9 @@ function TextField({ value, onChange }) {
   return (
     <StyledTextArea
       style={{
-        fontSize: "1.6rem",
-        width: "100%",
-        backgroundColor: "transparent",
+        fontSize: '1.6rem',
+        width: '100%',
+        backgroundColor: 'transparent',
       }}
       placeholder="..."
       rows={3}

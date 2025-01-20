@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { RiAlarmWarningLine } from "react-icons/ri";
-import useDeleteAllMessages from "./useDeleteAllMessages";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-import ConfirmModal from "../ui/ConfirmModal";
+import { useState } from 'react';
+import { RiAlarmWarningLine } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import ConfirmModal from '../ui/ConfirmModal';
+import useDeleteAllMessages from './useDeleteAllMessages';
 
 const StyledKillSwitch = styled.button`
   border: 0.7px solid var(--red-error);
@@ -62,7 +62,7 @@ function KillSwitch() {
 
   return (
     <>
-      {" "}
+      {' '}
       <StyledKillSwitch onClick={openModal} disabled={isDeletingMessages}>
         <StyledIcon>
           <RiAlarmWarningLine />

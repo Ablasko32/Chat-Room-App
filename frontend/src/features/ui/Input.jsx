@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledLabel = styled.label`
   font-size: 1.5rem;
@@ -55,4 +55,4 @@ const InputContainer = styled.div`
   gap: 2px;
 `;
 
-export { StyledLabel, StyledInput, StyledSelect, FormError, InputContainer };
+export { FormError, InputContainer, StyledInput, StyledLabel, StyledSelect };

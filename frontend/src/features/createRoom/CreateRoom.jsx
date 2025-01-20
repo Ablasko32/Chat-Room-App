@@ -1,15 +1,20 @@
-import { createPortal } from "react-dom";
-import styled, { css } from "styled-components";
-import useCreateRoom from "./useCreateRoom";
-import { useForm } from "react-hook-form";
-import { StyledLabel, StyledInput, StyledSelect, FormError } from "../ui/Input";
-import { StyledButton } from "../ui/Button";
-import Header from "../ui/Header";
-import CardContainer from "../ui/CardContainer";
-import { InputContainer } from "../ui/Input";
-import StyledForm from "../ui/StyledForm";
-import { useState } from "react";
-import Lock1 from "../../assets/lock1.svg";
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useForm } from 'react-hook-form';
+import styled, { css } from 'styled-components';
+import Lock1 from '../../assets/lock1.svg';
+import { StyledButton } from '../ui/Button';
+import CardContainer from '../ui/CardContainer';
+import Header from '../ui/Header';
+import {
+  FormError,
+  InputContainer,
+  StyledInput,
+  StyledLabel,
+  StyledSelect,
+} from '../ui/Input';
+import StyledForm from '../ui/StyledForm';
+import useCreateRoom from './useCreateRoom';
 
 // DISPLAYS CREATE ROOM FORM MODAL BY CREATING PORTAL TO DOCUMENT BODY
 // USES useCreateRoom custom hook
@@ -110,9 +115,9 @@ function CreateRoom({ onClose }) {
               id="room"
               type="text"
               placeholder="room"
-              {...register("name", {
-                required: "Name is required",
-                minLength: { value: 8, message: "Minimum length is 8" },
+              {...register('name', {
+                required: 'Name is required',
+                minLength: { value: 8, message: 'Minimum length is 8' },
               })}
             ></StyledInput>
             {errors?.name && <FormError>{errors.name.message}</FormError>}
@@ -123,11 +128,11 @@ function CreateRoom({ onClose }) {
               id="password"
               type="password"
               placeholder="password"
-              {...register("password", {
-                required: "Password is required",
+              {...register('password', {
+                required: 'Password is required',
                 minLength: {
                   value: 8,
-                  message: "Minimum length is 8",
+                  message: 'Minimum length is 8',
                 },
               })}
             ></StyledInput>
@@ -137,7 +142,7 @@ function CreateRoom({ onClose }) {
           </InputContainer>
           <InputContainer>
             <StyledLabel htmlFor="expiration">Self destruct</StyledLabel>
-            <StyledSelect id="expiration" {...register("expiration")}>
+            <StyledSelect id="expiration" {...register('expiration')}>
               <option value={60 * 60}>1 Hour</option>
               <option value={3 * 60 * 60}>3 Hours</option>
               <option value={12 * 60 * 60}>12 Hours</option>
@@ -152,7 +157,7 @@ function CreateRoom({ onClose }) {
         </StyledForm>
       </CardContainer>
     </StyledModal>,
-    document.body
+    document.body,
   );
 }
 

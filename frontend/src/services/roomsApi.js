@@ -1,16 +1,16 @@
-import axiosClient from "../config/axios";
+import axiosClient from '../config/axios';
 
 export async function createRoom(formData) {
   try {
-    const response = await axiosClient.post("/create-room", formData);
+    const response = await axiosClient.post('/create-room', formData);
     const { data, error } = response.data;
     if (error) {
-      throw new Error("Error creating Room");
+      throw new Error('Error creating Room');
     }
     console.log(data);
     return data;
   } catch (err) {
-    throw new Error(err.response?.data?.error || "Error creating room");
+    throw new Error(err.response?.data?.error || 'Error creating room');
   }
 }
 
@@ -18,15 +18,15 @@ export async function createRoom(formData) {
 
 export async function loginToRoom(formData) {
   try {
-    const response = await axiosClient.post("/room-login", formData);
+    const response = await axiosClient.post('/room-login', formData);
     const { data, error } = response.data;
     if (error) {
-      throw new Error("Error loging in f");
+      throw new Error('Error loging in f');
     }
     console.log(data);
     return data;
   } catch (err) {
-    throw new Error(err.response?.data?.error || "Error loging in f");
+    throw new Error(err.response?.data?.error || 'Error loging in f');
   }
 }
 

@@ -2,25 +2,25 @@ const VITE_SECRET = import.meta.env.VITE_SECRET;
 
 if (!window.crypto.subtle) {
   throw new Error(
-    "FATAL: The crypto API is not available in this environment.Check if using HTTPS!"
+    'FATAL: The crypto API is not available in this environment.Check if using HTTPS!',
   );
 }
 
 async function deriveKey(secret) {
   const encoder = new TextEncoder();
   const data = encoder.encode(secret + VITE_SECRET);
-  const hash = await window.crypto.subtle.digest("SHA-256", data);
+  const hash = await window.crypto.subtle.digest('SHA-256', data);
   return new Uint8Array(hash);
 }
 
 async function createAesKey(secret) {
   const value = await deriveKey(secret);
   const key = await window.crypto.subtle.importKey(
-    "raw",
+    'raw',
     value,
-    { name: "AES-CBC", length: 256 },
+    { name: 'AES-CBC', length: 256 },
     true,
-    ["encrypt", "decrypt"]
+    ['encrypt', 'decrypt'],
   );
   return key;
 }
@@ -32,11 +32,11 @@ export async function encrypt(message, secret) {
 
   const encrypted = await window.crypto.subtle.encrypt(
     {
-      name: "AES-CBC",
+      name: 'AES-CBC',
       iv,
     },
     key,
-    encoder.encode(message)
+    encoder.encode(message),
   );
 
   return { encrypted, iv };
@@ -48,11 +48,11 @@ export async function decrypt(cipher, secret, iv) {
 
   const decrypt = await window.crypto.subtle.decrypt(
     {
-      name: "AES-CBC",
+      name: 'AES-CBC',
       iv,
     },
     key,
-    cipher
+    cipher,
   );
 
   const message = decoder.decode(decrypt);

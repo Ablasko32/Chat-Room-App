@@ -1,15 +1,19 @@
-import { useState } from "react";
-import styled from "styled-components";
-import CreateRoom from "../createRoom/CreateRoom";
-import useLogin from "./useLogin";
-import Lock1 from "../../assets/lock1.svg";
-import { StyledLabel, StyledInput, FormError } from "../ui/Input";
-import { StyledButton } from "../ui/Button";
-import { useForm } from "react-hook-form";
-import Header from "../ui/Header";
-import CardContainer from "../ui/CardContainer";
-import StyledForm from "../ui/StyledForm";
-import { InputContainer } from "../ui/Input";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import Lock1 from '../../assets/lock1.svg';
+import CreateRoom from '../createRoom/CreateRoom';
+import { StyledButton } from '../ui/Button';
+import CardContainer from '../ui/CardContainer';
+import Header from '../ui/Header';
+import {
+  FormError,
+  InputContainer,
+  StyledInput,
+  StyledLabel,
+} from '../ui/Input';
+import StyledForm from '../ui/StyledForm';
+import useLogin from './useLogin';
 
 // DISPLAYS HOMEPAGE WHERE YOU CAN CONNECT TO A ROOM OR CREATE ONE
 // USES useLogin CUSTOM HOOK TO RECIVE JWT TOKEN AND STORE IT IN LOCAL STORAGE as authToken
@@ -37,7 +41,7 @@ const Divider = styled.div`
 
   &::before,
   &::after {
-    content: "";
+    content: '';
     flex: 1;
     height: 1px;
     background-color: var(--soft-border);
@@ -98,9 +102,9 @@ function Homepage() {
             id="name"
             type="text"
             placeholder="name"
-            {...register("name", {
-              required: "Nickname is required",
-              minLength: { value: 5, message: "Min lenght is 5" },
+            {...register('name', {
+              required: 'Nickname is required',
+              minLength: { value: 5, message: 'Min lenght is 5' },
             })}
           />
           {errors?.name && <FormError>{errors.name.message}</FormError>}
@@ -111,8 +115,8 @@ function Homepage() {
             id="room"
             type="text"
             placeholder="room"
-            {...register("room", {
-              required: "Room name is required",
+            {...register('room', {
+              required: 'Room name is required',
             })}
           ></StyledInput>
           {errors?.room && <FormError>{errors.room.message}</FormError>}
@@ -123,12 +127,12 @@ function Homepage() {
             id="password"
             type="password"
             placeholder="password"
-            {...register("password", { required: "Password is required" })}
+            {...register('password', { required: 'Password is required' })}
           ></StyledInput>
           {errors?.password && <FormError>{errors.password.message}</FormError>}
         </InputContainer>
         <ButtonContainer>
-          {" "}
+          {' '}
           <StyledButton
             $primary
             disabled={isLogingIn}

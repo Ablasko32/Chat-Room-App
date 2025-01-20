@@ -1,17 +1,17 @@
-import axiosClient from "../config/axios";
+import axiosClient from '../config/axios';
 
 // GETS all room messages requires JWT token
 export async function getMessages(room) {
   // console.log(`get-messages/${room}`);
 
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) throw new Error("Token not found");
+    const token = localStorage.getItem('authToken');
+    if (!token) throw new Error('Token not found');
     const response = await axiosClient.get(`get-messages/${room}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (response.status !== 200) {
-      throw new Error("Error fetching messages");
+      throw new Error('Error fetching messages');
     }
     // console.log("RESPONSE", response);
     return response.data.data;
@@ -22,8 +22,8 @@ export async function getMessages(room) {
 // DELETES all room messages requires JWT token
 export async function deleteMessages(room) {
   try {
-    const token = localStorage.getItem("authToken");
-    if (!token) throw new Error("Token not found");
+    const token = localStorage.getItem('authToken');
+    if (!token) throw new Error('Token not found');
 
     const response = await axiosClient.delete(`delete-messages/${room}`, {
       headers: {
@@ -31,7 +31,7 @@ export async function deleteMessages(room) {
       },
     });
 
-    if (response.status !== 200) throw new Error("Error deleting messages");
+    if (response.status !== 200) throw new Error('Error deleting messages');
 
     return response.data.data;
   } catch (err) {

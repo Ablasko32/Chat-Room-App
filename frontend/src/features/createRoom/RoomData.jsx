@@ -1,6 +1,6 @@
-import { CiUser } from "react-icons/ci";
-import { PiHouseThin } from "react-icons/pi";
-import styled from "styled-components";
+import { CiUser } from 'react-icons/ci';
+import { PiHouseThin } from 'react-icons/pi';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ function RoomData({ name, room }) {
     <Container>
       <StyledRow>
         <StyledIcon>
-          <CiUser />{" "}
+          <CiUser />{' '}
         </StyledIcon>
 
         <StyledData>{name}</StyledData>
