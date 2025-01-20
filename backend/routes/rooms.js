@@ -5,51 +5,120 @@ import {
   verifyToken,
 } from "../controllers/roomsController.js";
 
-/**
- * @module rooms - API roomsRouter
- * @description  Rooms router allows for room menagment with creating rooms,login to rooms and token validation
- */
 const roomsRouter = Router();
 
 /**
- *  @member rooms
- *  @name POST /create-room
- *  @function
- *  @description Creates room with name, password and expiration time
- *  @param {string} roomName - Body param to be provided, name of the room
- *  @param {string} password - Body param to be provided, password of the room
- *  @param {string} expiration - Body param to be provided, expiration of the room
- *  @returns {Object} 201 -Object containing name of room created and error as null
- *  @example 201 - { data: name, error: null }
+ * @swagger
+ * /create-room:
+ *   post:
+ *     summary: Create a new room
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               expiration:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Room created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                 error:
+ *                   type: null
  */
-// requires roomName,password,expiration
 roomsRouter.post("/create-room", createRoom);
 
 /**
- *
- *  @member rooms
- *  @name POST /room-login
- *  @function
- *  @description Logins to room with roomName and password
- *  @param {string} roomName - Body param to be provided, name of the room
- *  @param {string} password - Body param to be provided, password of the room
- *  @returns {Object} 200 -Object containing JWT token, name and roomName
- *  @example 200 - {
-      data: { token: token, room: roomName, name: name },
-      error: null,
-    }
+ * @swagger
+ * /room-login:
+ *   post:
+ *     summary: Login to a room
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               roomName:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successful verification
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                     room:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                 error:
+ *                   type: null
  */
 roomsRouter.post("/room-login", loginRoom);
+
 /**
- *  @member rooms
- *  @name POST /verify-jwt
- *  @function
- *  @description Verifies JWT token
- *  @param {string} token - Body param to be provided, JWT token
- *  @param {string} paramData - Body param to be provided, roomName and user name from url
- *  @returns {Object} 200 -Object containing if JWT token is valid
- *  @example 200 - { data: { valid: true }, error: null }
+ * @swagger
+ * /verify-jwt:
+ *   post:
+ *     summary: Verify JWT token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *               paramData:
+ *                 type: object
+ *     responses:
+ *       200:
+ *         description: Successful verification
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     valid:
+ *                       type: boolean
+ *                     message:
+ *                       type: string
+ *                 error:
+ *                   type: string
+ *
  */
+
 roomsRouter.post("/verify-jwt", verifyToken);
 
 export default roomsRouter;

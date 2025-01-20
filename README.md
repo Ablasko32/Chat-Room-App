@@ -111,9 +111,7 @@ A real-time chat room application built from scratch, including both backend and
    node server.js
    ```
 
-   > Basic API Docs available via JSDoc:
-   >
-   > > `npm run docs`
+   > Basic API Docs available via Swagger on /backend/api-docs
 
 6. **Start frontend server**
 
